@@ -1,0 +1,41 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - heading "HookHub" [level=1] [ref=e4]
+      - paragraph [ref=e5]: Discover open-source hooks for Claude Code.
+    - main [ref=e6]:
+      - generic [ref=e7]:
+        - generic [ref=e8]: Search hooks
+        - searchbox "Search hooks" [active] [ref=e9]: security
+      - status [ref=e10]: 2 of 5 hooks
+      - list [ref=e11]:
+        - listitem [ref=e12]:
+          - article [ref=e13]:
+            - generic [ref=e14]:
+              - generic [ref=e15]: Security
+              - heading "Claude Code Hooks (karanb192)" [level=2] [ref=e16]
+            - paragraph [ref=e17]: Collection of hooks for safety, cost control, observability and productivity, plus an installable plugin marketplace.
+            - link "View karanb192/claude-code-hooks on GitHub (opens in new tab)" [ref=e18] [cursor=pointer]:
+              - /url: https://github.com/karanb192/claude-code-hooks
+              - generic [aria-hidden] [ref=e19]: View on GitHub ↗
+              - generic [aria-hidden] [ref=e20]: karanb192/claude-code-hooks
+        - listitem [ref=e32]:
+          - article [ref=e33]:
+            - generic [ref=e34]:
+              - generic [ref=e35]: Security
+              - heading "Claude Code Safety Hooks" [level=2] [ref=e36]
+            - paragraph [ref=e37]: The original 16 safety hooks collected from long autonomous Claude Code runs.
+            - link "View yurukusa/claude-code-hooks on GitHub (opens in new tab)" [ref=e38] [cursor=pointer]:
+              - /url: https://github.com/yurukusa/claude-code-hooks
+              - generic [aria-hidden] [ref=e39]: View on GitHub ↗
+              - generic [aria-hidden] [ref=e40]: yurukusa/claude-code-hooks
+    - contentinfo [ref=e62]:
+      - generic [ref=e63]:
+        - paragraph [ref=e64]: HookHub links to third-party code. Review any hook before installing it. HookHub doesn't audit or endorse listed hooks.
+        - paragraph [ref=e65]:
+          - link "Add a hook" [ref=e66] [cursor=pointer]:
+            - /url: https://github.com/chl218/scratch
+          - text: by opening a pull request that edits
+          - code [ref=e67]: data/hooks.json
+          - text: .
+  - alert [ref=e68]

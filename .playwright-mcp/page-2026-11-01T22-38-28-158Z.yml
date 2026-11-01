@@ -1,0 +1,1212 @@
+- generic [active] [ref=e1]:
+  - banner:
+    - generic:
+      - navigation:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - button
+                - generic:
+                  - link:
+                    - /url: https://www.cnn.com
+              - generic:
+                - link:
+                  - /url: https://www.cnn.com/subscription/all-access?source=sub_web_wall-wat-nav
+                  - text: Watch
+                - link: Subscribe
+                - generic:
+                  - navigation:
+                    - generic:
+                      - link: Sign in
+            - separator
+  - generic:
+    - generic:
+      - generic:
+        - main:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - list:
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/watch
+                                    - generic:
+                                      - generic: CNN Headlines
+                                      - generic: Catch up on today’s headlines
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/live-core-1
+                                  - link:
+                                    - /url: https://www.cnn.com/live-core-1
+                                    - generic:
+                                      - generic:
+                                        - generic: Live
+                                        - generic: Trump speaks at rally in Iowa
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/live-core-2
+                                  - link:
+                                    - /url: https://www.cnn.com/live-core-2
+                                    - generic:
+                                      - generic:
+                                        - generic: Live
+                                        - generic: "Soon: El-Sayed holds a rally in Detroit"
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/watch/cnn-stream
+                                  - link:
+                                    - /url: https://www.cnn.com/watch/cnn-stream
+                                    - generic:
+                                      - generic:
+                                        - generic: Live
+                                        - generic: CNN Stream
+                                      - generic: Live 24/7
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/videos/title-2506994?episode=2601039&source=subwall:vod:episode-2601039&iid=related-embed_streaming-now
+                                  - link:
+                                    - /url: https://www.cnn.com/videos/title-2506994?episode=2601039&source=subwall:vod:episode-2601039&iid=related-embed_streaming-now
+                                    - generic:
+                                      - generic: David Alan Grier and Sam Jay give their humorous takes on current trends
+                                      - generic: Have I Got News For You
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/videos/title-2598661?episode=2602087&source=subwall:vod:episode-2602087&iid=related-embed_streaming-now
+                                  - link:
+                                    - /url: https://www.cnn.com/videos/title-2598661?episode=2602087&source=subwall:vod:episode-2602087&iid=related-embed_streaming-now
+                                    - generic:
+                                      - generic: The midterm numbers point to a blowout
+                                      - generic: Countdown To Election Night
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/videos/title-2599145?episode=2599161&source=subwall:vod:episode-2599161&iid=related-embed_streaming-now
+                                  - link:
+                                    - /url: https://www.cnn.com/videos/title-2599145?episode=2599161&source=subwall:vod:episode-2599161&iid=related-embed_streaming-now
+                                    - generic:
+                                      - generic: John King takes the Magic Wall on the road to Maine
+                                      - generic: All Over the Map
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/videos/title-2600663?episode=2602088&source=subwall:vod:episode-2602088&iid=related-embed_streaming-now
+                                  - link:
+                                    - /url: https://www.cnn.com/videos/title-2600663?episode=2602088&source=subwall:vod:episode-2602088&iid=related-embed_streaming-now
+                                    - generic:
+                                      - generic: Michael Douglas is ready to talk about his struggles, triumphs and love
+                                      - generic: Coming Up
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - text: Live Updates
+                              - heading [level=2]:
+                                - link:
+                                  - /url: /2026/11/01/politics/live-news/midterm-election-congress
+                                  - text: Democrats close ranks around El-Sayed's Senate bid after Stevens endorses GOP nominee
+                              - generic: "'I actually don't think about Haley Stevens,' Abdul El-Sayed says in response to the endorsement"
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - list:
+                                        - listitem:
+                                          - link:
+                                            - /url: /2026/11/01/politics/live-news/midterm-election-congress
+                                            - generic: Emily Elconin/Bloomberg/Getty Images
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - separator
+                                          - time: 14 min ago
+                                          - link:
+                                            - /url: https://www.cnn.com/2026/11/01/politics/live-news/midterm-election-congress#cmvye451p00003b6t2ptrp2b2
+                                            - generic: Top GOP super PAC makes small expenditure for Louisiana Senate race
+                                        - generic:
+                                          - separator
+                                          - time: 16 min ago
+                                          - link:
+                                            - /url: https://www.cnn.com/2026/11/01/politics/live-news/midterm-election-congress#cmvyciiac000b3b6t4v53p0lc
+                                            - generic: "Detroit voters say they're irked by Stevens' GOP endorsement: \"A wolf in sheep's clothing\""
+                                        - generic:
+                                          - separator
+                                          - time: 29 min ago
+                                          - link:
+                                            - /url: https://www.cnn.com/2026/11/01/politics/live-news/midterm-election-congress#cmvydndki00043b6tgkuxqico
+                                            - generic: Kamala Harris robocalls for Abdul El-Sayed go out to voters in campaign’s final days
+                                        - generic:
+                                          - separator
+                                          - time: 38 min ago
+                                          - link:
+                                            - /url: https://www.cnn.com/2026/11/01/politics/live-news/midterm-election-congress#cmvycxoc2000l3b6u9r4k4bps
+                                            - generic: From "a little bit heavier" to "in perfect shape," Trump praises Hinson's weight loss
+                                        - generic:
+                                          - separator
+                                          - time: 47 min ago
+                                          - link:
+                                            - /url: https://www.cnn.com/2026/11/01/politics/live-news/midterm-election-congress#cmvycgfio000a3b6thlvaly9u
+                                            - generic: Rep. Debbie Dingell tells CNN that Stevens "seriously hurt herself" by endorsing Rogers
+                                  - generic:
+                                    - link:
+                                      - /url: https://www.cnn.com/2026/11/01/politics/live-news/midterm-election-congress
+                                      - generic: View all updates
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - list:
+                                        - listitem:
+                                          - link:
+                                            - /url: /2026/11/01/politics/video/michigan-haley-stevens-heckler-mike-rogers-endorsement-digvid-vrtc
+                                            - generic: 1:40
+                                          - generic: Democrat Haley Stevens explains endorsement of Mike Rogers
+                                        - listitem:
+                                          - link:
+                                            - /url: /2026/11/01/politics/video/trump-reacts-haley-stevens-endorsement-mike-rogers-vrtc
+                                            - generic: 1:15
+                                          - generic: Trump reacts to Haley Stevens’ endorsement of Mike Rogers
+                                        - listitem:
+                                          - link:
+                                            - /url: /2026/11/01/politics/video/el-sayed-i-dont-think-about-haley-stevens-digvid-vrtc
+                                            - generic: 1:03
+                                          - generic: "El-Sayed: ‘I don’t think about Haley Stevens’"
+                                        - listitem:
+                                          - link:
+                                            - /url: /2026/11/01/politics/video/cnns-manu-raju-interviews-candidates-across-the-crountry
+                                            - generic: 2:05
+                                          - generic: CNN’s Manu Raju interviews midterm candidates nationwide
+                                        - listitem:
+                                          - link:
+                                            - /url: /2026/11/01/politics/video/dan-s-sullivan-says-he-will-accept-election-results
+                                            - generic: 1:27
+                                          - generic: Sen. Dan Sullivan says he will accept election results
+                                        - listitem:
+                                          - link:
+                                            - /url: /2026/11/01/politics/video/haley-stevens-endorses-mike-rogers-senate-race-digvid-vrtc
+                                            - generic: 1:00
+                                          - generic: CNN reporter breaks down what led up to Stevens’ surprise endorsement
+                                        - listitem:
+                                          - link:
+                                            - /url: /2026/11/01/politics/video/billionaire-tax-divides-voters-california-michaelson-digvid-vrtc
+                                            - generic: 1:17
+                                          - generic: ‘Billionaire tax’ divides voters in California
+                                        - listitem:
+                                          - link:
+                                            - /url: /2026/11/01/politics/video/alaskas-is-about-more-than-just-two-dan-sullivans
+                                            - generic: 1:15
+                                          - generic: Breaking down Alaska’s senate race controversy
+                                        - listitem:
+                                          - link:
+                                            - /url: /2026/11/01/politics/video/the-fight-for-battleground-state-pennsylvania-digvid-vrtc
+                                            - generic: 1:39
+                                          - generic: The fight for battleground state Pennsylvania
+                                        - listitem:
+                                          - link:
+                                            - /url: /2026/10/31/politics/video/can-democrats-flip-iowa
+                                            - generic: 2:32
+                                          - generic: Can Democrats flip Iowa?
+                                        - listitem:
+                                          - link:
+                                            - /url: /2026/10/31/politics/video/talarico-you-want-a-senator-who-serves-you-or-serves-billionaire-mega-donors-digvid-vrtc
+                                            - generic: 0:29
+                                          - generic: Talarico slams Paxton as ‘bought and paid for’ by billionaires
+                                        - listitem:
+                                          - link:
+                                            - /url: /2026/10/31/politics/video/paxton-rally-in-fort-worth-vrtc
+                                            - generic: 0:30
+                                          - generic: Paxton issues warning about voting for Talarico at rally
+                                        - listitem:
+                                          - link:
+                                            - /url: /2026/10/31/politics/video/gabe-cohen-expect-election-monitors-at-record-levels-vrtc
+                                            - generic: 1:52
+                                          - generic: Record numbers of election monitors expected at polls
+                                        - listitem:
+                                          - link:
+                                            - /url: /2026/10/31/politics/video/olivia-rodrigo-gives-amy-acton-flowers-during-columbus-concert
+                                            - generic: 0:21
+                                          - generic: Olivia Rodrigo gives Amy Acton flowers during Ohio concert
+                                        - listitem:
+                                          - link:
+                                            - /url: /2026/10/31/politics/video/in-2026-texas-becomes-a-battleground-state-digvid-vrtc
+                                            - generic: 1:28
+                                          - generic: Texas becomes a battleground state in 2026
+                                        - listitem:
+                                          - link:
+                                            - /url: /2026/10/31/politics/video/scott-colom-mississippi-senate-kamala-harris-election-digvid-vrtc
+                                            - generic: 1:04
+                                          - generic: Why this Mississippi Dem invited Kamala Harris to campaign
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - list:
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/11/01/us/south-florida-plane-crash
+                                        - link:
+                                          - /url: /2026/11/01/us/south-florida-plane-crash
+                                          - generic:
+                                            - generic: 9 killed after a Learjet crashes and erupts into flames in Palm Beach County, Florida
+                                            - generic: The crash is the second deadliest in the United States this year, according to NTSB records
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - list:
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/11/01/politics/alaska-senate-judge-ruling
+                                        - link:
+                                          - /url: /2026/11/01/politics/alaska-senate-judge-ruling
+                                          - generic:
+                                            - generic: Judge throws out DOJ attempt to delay certification of Alaska Senate race
+                                            - generic: A federal judge on Sunday threw out the DOJ's lawsuit seeking to segregate ballots and delay certification of Alaska's Senate race
+                                      - listitem:
+                                        - link:
+                                          - /url: https://www.cnn.com/2026/11/01/politics/live-news/midterm-election-congress?t=1793556987335&post-id=cmvy4ulzj000r3b6udh9820q4
+                                          - generic: Read the judge’s opinion in the Alaska ruling
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/11/01/politics/video/dan-s-sullivan-duplicate-candidate-plot-shows-disdain-and-disrespect-for-alaskans
+                                          - generic:
+                                            - generic:
+                                              - generic: Dan Sullivan on Alaska ballot controversy
+                                              - generic: 1:51
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - heading [level=2]: Developing
+                                - generic:
+                                  - generic:
+                                    - list:
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/11/01/sport/jack-campbell-lions-carted-off
+                                          - time: 1 hr ago
+                                          - generic: Lions All-Pro LB Jack Campbell placed on backboard, carted off field after a tackle against Vikings
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/11/01/politics/chris-murphy-stroke
+                                          - time: 1 hr ago
+                                          - generic: Sen. Chris Murphy hospitalized with stroke and expected to make full recovery, his team says
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/11/01/us/dallas-halloween-night-shootings
+                                          - time: 1 hr ago
+                                          - generic: 4 killed, about 15 injured after multiple overnight shootings in Dallas neighborhood, police say
+                              - generic:
+                                - generic:
+                                  - heading [level=2]: Across Our Coverage
+                                - generic:
+                                  - generic:
+                                    - list:
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/11/01/entertainment/megan-thee-stallion-halloween-costume
+                                          - generic:
+                                            - generic:
+                                              - generic:
+                                                - generic: Entertainment
+                                                - generic: Hot Girl Productions
+                                        - link:
+                                          - /url: /2026/11/01/entertainment/megan-thee-stallion-halloween-costume
+                                          - generic: The story behind Megan Thee Stallion’s elaborately spooky Halloween costume
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/11/01/health/no-training-for-family-caregivers-wellness
+                                        - link:
+                                          - /url: /2026/11/01/health/no-training-for-family-caregivers-wellness
+                                          - generic:
+                                            - generic:
+                                              - generic: Wellness
+                                              - generic: The little-known Medicare program that could help about 63 million caregivers
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/11/01/business/cheesecake-factory-tuscan-moms
+                                        - link:
+                                          - /url: /2026/11/01/business/cheesecake-factory-tuscan-moms
+                                          - generic:
+                                            - generic:
+                                              - generic: Business
+                                              - generic: The Cheesecake Factory can’t get enough of the Gen Z ‘Tuscan moms’
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/10/31/sport/valkyries-dream-wnba-finals-game-7
+                                        - link:
+                                          - /url: /2026/10/31/sport/valkyries-dream-wnba-finals-game-7
+                                          - generic:
+                                            - generic:
+                                              - generic: Sports
+                                              - generic: Golden State Valkyries make history with first WNBA title in the team’s second year of existence
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - list:
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/11/01/economy/americans-midterm-personal-economics
+                                        - link:
+                                          - /url: /2026/11/01/economy/americans-midterm-personal-economics
+                                          - generic:
+                                            - generic: "‘Nobody’s listening’: 5 things Americans told me about the economy that Washington needs to hear"
+                                            - generic: From Cleveland to the Outer Banks, the cost-of-living crisis that will decide the midterms, in the words of the people living it
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - button
+                                      - button
+                                      - button
+                                      - button
+                                      - button
+                                      - button
+                                      - button
+                                      - button
+                                      - button
+                                    - generic:
+                                      - button
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - link:
+                                          - /url: https://www.cnn.com/election/2026
+                                          - generic:
+                                            - generic: Election 2026
+                                            - generic: Guide to the midterms
+                                            - generic: Get a comprehensive picture of where races stand heading into Tuesday.
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - link:
+                                          - /url: https://www.cnn.com/election/2026
+                                        - link:
+                                          - /url: https://www.cnn.com/election/2026
+                                    - generic:
+                                      - generic:
+                                        - link:
+                                          - /url: https://www.cnn.com/election/2026
+                                        - link:
+                                          - /url: https://www.cnn.com/election/2026
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - heading [level=2]: CNN Underscored
+                                - generic:
+                                  - generic:
+                                    - list:
+                                      - listitem:
+                                        - link:
+                                          - /url: /cnn-underscored/gifts/best-gifts-for-girlfriends
+                                        - link:
+                                          - /url: /cnn-underscored/gifts/best-gifts-for-girlfriends
+                                          - generic: The 24 best gifts to impress your girlfriend in 2026
+                                      - listitem:
+                                        - link:
+                                          - /url: /cnn-underscored/fashion/the-best-clogs
+                                        - link:
+                                          - /url: /cnn-underscored/fashion/the-best-clogs
+                                          - generic: 23 must-have clogs for men and women for the coziest fall yet
+                                      - listitem:
+                                        - link:
+                                          - /url: /cnn-underscored/gifts/gifts-for-brother
+                                        - link:
+                                          - /url: /cnn-underscored/gifts/gifts-for-brother
+                                          - generic: I found 33 gifts for every kind of brother, from the nostalgic to the impossible to please
+                              - generic:
+                                - generic:
+                                  - heading [level=2]: For Subscribers
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - list:
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/11/01/politics/election-night-midterm-races
+                                        - link:
+                                          - /url: /2026/11/01/politics/election-night-midterm-races
+                                          - generic:
+                                            - generic:
+                                              - generic: Analysis for Subscribers
+                                              - generic: If a blue wave is coming, here are the races where it will start
+                                            - generic: Midterm elections are almost always bad for the president's party. Sometimes they are very bad. And every so often they are historically bad
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/11/01/politics/democrats-midterms-hakeem-jeffries
+                                          - generic: Democratic leaders enter the midterms ‘confident and paranoid’
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/11/01/politics/midterm-election-cheesecake-factory
+                                          - generic:
+                                            - generic:
+                                              - generic: Analysis
+                                              - generic: The last-minute surprises and sideshows of the 2026 campaign
+                              - generic:
+                                - generic:
+                                  - heading [level=2]: More Top Stories
+                                - generic:
+                                  - generic:
+                                    - list:
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/11/01/europe/italy-russian-superyachts-sanctions-taxpayers-intl
+                                        - link:
+                                          - /url: /2026/11/01/europe/italy-russian-superyachts-sanctions-taxpayers-intl
+                                          - generic: ‘The world’s ugliest yacht’ is costing Italian taxpayers millions. It’s not the only one
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/11/01/us/flock-cameras-atlanta-privacy-backlash
+                                        - link:
+                                          - /url: /2026/11/01/us/flock-cameras-atlanta-privacy-backlash
+                                          - generic: Flock cameras are getting pushback even in the company’s hometown
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/11/01/politics/election-threats-federal-preparations
+                                        - link:
+                                          - /url: /2026/11/01/politics/election-threats-federal-preparations
+                                          - generic: Election officials brace for foreign threats — and an unpredictable Washington
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/11/01/health/health-candidates-midterms
+                                        - link:
+                                          - /url: /2026/11/01/health/health-candidates-midterms
+                                          - generic: A record number of health professionals are running for office. Could they help heal US politics?
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/11/01/us/alabama-college-football-game-shooting
+                                        - link:
+                                          - /url: /2026/11/01/us/alabama-college-football-game-shooting
+                                          - generic: 1 dead, 8 injured in shooting after college football game in Alabama
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/11/01/us/bend-oregon-hero-teacher
+                                        - link:
+                                          - /url: /2026/11/01/us/bend-oregon-hero-teacher
+                                          - generic: Hero teacher who tackled Bend gunman speaks out as community prepares to reopen school
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - link:
+                                    - /url: https://www.cnn.com/world/heroes
+                                    - heading [level=2]: "CNN Heroes: Vote now"
+                                - generic:
+                                  - generic:
+                                    - list:
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/07/10/us/andrew-lunetta-a-tiny-home-for-good-cnnheroes
+                                          - generic: CNN
+                                        - link:
+                                          - /url: /2026/07/10/us/andrew-lunetta-a-tiny-home-for-good-cnnheroes
+                                          - generic: "From homeless to a place of their own: How ‘A Tiny Home for Good’ is helping people rebuild their lives"
+                                      - listitem:
+                                        - link:
+                                          - /url: /2026/07/09/us/video/andrew-lunetta-a-tiny-home-for-good-cnnheroes
+                                        - link:
+                                          - /url: /2026/07/09/us/video/andrew-lunetta-a-tiny-home-for-good-cnnheroes
+                                          - generic:
+                                            - generic:
+                                              - generic: "‘Landlords who care’: How these tiny homes are helping unhoused people"
+                                              - generic: 2:12
+                                      - listitem:
+                                        - link:
+                                          - /url: https://www.cnn.com/world/heroes
+                                        - link:
+                                          - /url: https://www.cnn.com/world/heroes
+                                          - generic: Vote for CNN Hero of the Year
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - link:
+                                      - /url: https://www.cnn.com/videos/title-2572883
+                                    - paragraph: John King talks to voters across the country ahead of Election Day
+                                  - generic:
+                                    - list:
+                                      - listitem:
+                                        - link:
+                                          - /url: https://www.cnn.com/videos/title-2599145?episode=2599172&source=subwall:vod:episode-2599172&iid=related-embed_streaming-now
+                                        - link:
+                                          - /url: https://www.cnn.com/videos/title-2599145?episode=2599172&source=subwall:vod:episode-2599172&iid=related-embed_streaming-now
+                                          - generic: Could Iowa go blue?
+                                      - listitem:
+                                        - link:
+                                          - /url: https://www.cnn.com/videos/title-2599145?episode=2599160&source=subwall:vod:episode-2599160&iid=related-embed_streaming-now
+                                        - link:
+                                          - /url: https://www.cnn.com/videos/title-2599145?episode=2599160&source=subwall:vod:episode-2599160&iid=related-embed_streaming-now
+                                          - generic: "MI voters: Can El-Sayed win?"
+                                      - listitem:
+                                        - link:
+                                          - /url: https://www.cnn.com/videos/title-2599145?episode=2599165&source=subwall:vod:episode-2599165&iid=related-embed_streaming-now
+                                        - link:
+                                          - /url: https://www.cnn.com/videos/title-2599145?episode=2599165&source=subwall:vod:episode-2599165&iid=related-embed_streaming-now
+                                          - generic: What Latinos in TX want
+                                      - listitem:
+                                        - link:
+                                          - /url: https://www.cnn.com/videos/title-2599145?episode=2599169&source=subwall:vod:episode-2599169&iid=related-embed_streaming-now
+                                        - link:
+                                          - /url: https://www.cnn.com/videos/title-2599145?episode=2599169&source=subwall:vod:episode-2599169&iid=related-embed_streaming-now
+                                          - generic: AK may determine Senate
+                                      - listitem:
+                                        - link:
+                                          - /url: https://www.cnn.com/videos/title-2599145?episode=2599161&source=subwall:vod:episode-2599161&iid=related-embed_streaming-now
+                                        - link:
+                                          - /url: https://www.cnn.com/videos/title-2599145?episode=2599161&source=subwall:vod:episode-2599161&iid=related-embed_streaming-now
+                                          - generic: Voter questions in Maine
+                  - generic:
+                    - generic:
+                      - heading [level=2]:
+                        - link:
+                          - /url: https://www.cnn.com/election/2026
+                          - text: Elections 2026
+                      - iframe [ref=e2]:
+                        - main [ref=f4e3]:
+                          - generic [ref=f4e6]:
+                            - generic [ref=f4e7]:
+                              - link "Build your own Senate map 44 Democrats 50% 46 Republicans Key races" [ref=f4e9] [cursor=pointer]:
+                                - /url: https://www.cnn.com/politics/senate-map-midterm-election-vis
+                                - generic [ref=f4e10]:
+                                  - generic [ref=f4e11]: Build your own Senate map
+                                  - generic [ref=f4e15]:
+                                    - generic [ref=f4e17]:
+                                      - generic [ref=f4e18]:
+                                        - generic [ref=f4e19]:
+                                          - generic [ref=f4e20]: "44"
+                                          - generic [ref=f4e21]: Democrats
+                                        - generic [ref=f4e22]: 50%
+                                        - generic [ref=f4e23]:
+                                          - generic [ref=f4e24]: "46"
+                                          - generic [ref=f4e25]: Republicans
+                                      - paragraph [ref=f4e28]: Key races
+                                    - img [ref=f4e29]:
+                                      - generic [ref=f4e82]:
+                                        - generic [ref=f4e83]: TX
+                                        - generic [ref=f4e84]: MT
+                                        - generic [ref=f4e85]: ID
+                                        - generic [ref=f4e86]: CO
+                                        - generic [ref=f4e87]: NM
+                                        - generic [ref=f4e88]: OR
+                                        - generic [ref=f4e89]: WY
+                                        - generic [ref=f4e90]: IL
+                                        - generic [ref=f4e91]: KS
+                                        - generic [ref=f4e92]: IA
+                                        - generic [ref=f4e93]: NE
+                                        - generic [ref=f4e94]: SD
+                                        - generic [ref=f4e95]: FL
+                                        - generic [ref=f4e96]: MN
+                                        - generic [ref=f4e97]: OK
+                                        - generic [ref=f4e98]: AL
+                                        - generic [ref=f4e99]: GA
+                                        - generic [ref=f4e100]: AR
+                                        - generic [ref=f4e101]: LA
+                                        - generic [ref=f4e102]: TN
+                                        - generic [ref=f4e103]: NC
+                                        - generic [ref=f4e104]: KY
+                                        - generic [ref=f4e105]: MI
+                                        - generic [ref=f4e106]: VA
+                                        - generic [ref=f4e107]: MS
+                                        - generic [ref=f4e108]: OH
+                                        - generic [ref=f4e109]: SC
+                                        - generic [ref=f4e110]: ME
+                                        - generic [ref=f4e111]: WV
+                                        - generic [ref=f4e112]: NJ
+                                        - generic [ref=f4e113]: NH
+                                        - generic [ref=f4e114]: MA
+                                        - generic [ref=f4e115]: DE
+                                        - generic [ref=f4e116]: RI
+                                        - generic [ref=f4e117]: AK
+                              - 'link "Lead-up to Election Day 5 5 3 3 , 7 7 5 5 3 3 , 7 7 6 6 2 2 ballots have already been cast Sources: CNN, Catalist, AP; Data as of Nov. 1, 2026." [ref=f4e125] [cursor=pointer]':
+                                - /url: https://www.cnn.com/politics/early-voting-2026-us-midterm-election-vis
+                                - generic [ref=f4e126]:
+                                  - generic [ref=f4e127]: Lead-up to Election Day
+                                  - generic [ref=f4e130]:
+                                    - generic [ref=f4e133]:
+                                      - generic [ref=f4e135]:
+                                        - generic [ref=f4e136]:
+                                          - generic [ref=f4e137]: "5"
+                                          - generic [ref=f4e139]: "5"
+                                        - generic [ref=f4e141]:
+                                          - generic [ref=f4e142]: "3"
+                                          - generic [ref=f4e144]: "3"
+                                        - generic [ref=f4e146]: ","
+                                        - generic [ref=f4e147]:
+                                          - generic [ref=f4e148]: "7"
+                                          - generic [ref=f4e150]: "7"
+                                        - generic [ref=f4e152]:
+                                          - generic [ref=f4e153]: "5"
+                                          - generic [ref=f4e155]: "5"
+                                        - generic [ref=f4e157]:
+                                          - generic [ref=f4e158]: "3"
+                                          - generic [ref=f4e160]: "3"
+                                        - generic [ref=f4e162]: ","
+                                        - generic [ref=f4e163]:
+                                          - generic [ref=f4e164]: "7"
+                                          - generic [ref=f4e166]: "7"
+                                        - generic [ref=f4e168]:
+                                          - generic [ref=f4e169]: "6"
+                                          - generic [ref=f4e171]: "6"
+                                        - generic [ref=f4e173]:
+                                          - generic [ref=f4e174]: "2"
+                                          - generic [ref=f4e176]: "2"
+                                      - generic [ref=f4e178]: ballots have already been cast
+                                    - paragraph [ref=f4e179]: "Sources: CNN, Catalist, AP; Data as of Nov. 1, 2026."
+                            - generic [ref=f4e180]:
+                              - generic [aria-hidden] [ref=f4e181]:
+                                - generic [ref=f4e182] [cursor=pointer]
+                                - generic [ref=f4e183] [cursor=pointer]
+                              - link "Plot a path" [ref=f4e184] [cursor=pointer]:
+                                - /url: https://www.cnn.com/politics/senate-map-midterm-election-vis
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - heading [level=2]: CNN Shorts
+                          - generic:
+                            - generic:
+                              - list:
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/11/01/politics/video/trump-canada-trade-deal-keystone-pipeline-digvid-vrtc
+                                    - generic: 0:42
+                                  - generic: Trump says he has ‘concepts of a very good deal’ with Canada
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/11/01/politics/video/dnc-chair-were-prepared-for-legal-battles-digvid-vrtc
+                                    - generic: 0:35
+                                  - generic: "DNC chair: ‘We’re prepared’ for legal battles"
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/11/01/politics/video/cnns-manu-raju-interviews-candidates-across-the-crountry
+                                    - generic: 2:05
+                                  - generic: CNN’s Manu Raju interviews midterm candidates nationwide
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/11/01/sport/video/notre-dame-villanova-mens-basketball-rome-digvid-vrtc
+                                    - generic: 0:47
+                                  - generic: Notre Dame topples Villanova in first season opener in Rome
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/11/01/entertainment/video/heidi-klum-dresses-as-her-left-hand-for-halloween-digvid-vrtc-hnk
+                                    - generic: 0:47
+                                  - generic: Heidi Klum dresses as her left hand for Halloween
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/11/01/politics/video/trump-reacts-haley-stevens-endorsement-mike-rogers-vrtc
+                                    - generic: 1:15
+                                  - generic: Trump reacts to Haley Stevens’ endorsement of Mike Rogers
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/11/01/politics/video/haley-stevens-endorses-mike-rogers-senate-race-digvid-vrtc
+                                    - generic: 1:00
+                                  - generic: Democrat Haley Stevens breaks with her party to endorse Michigan Republican nominee
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/11/01/politics/video/el-sayed-i-dont-think-about-haley-stevens-digvid-vrtc
+                                    - generic: 1:03
+                                  - generic: "El-Sayed: ‘I don’t think about Haley Stevens’"
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/11/01/politics/video/michigan-haley-stevens-heckler-mike-rogers-endorsement-digvid-vrtc
+                                    - generic: 1:40
+                                  - generic: "‘Traitor!’: Heckler interrupts Stevens after Rogers endorsement"
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/11/01/politics/video/dan-s-sullivan-duplicate-candidate-plot-shows-disdain-and-disrespect-for-alaskans
+                                    - generic: 1:51
+                                  - generic: Dan Sullivan on Alaska ballot controversy
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/11/01/sport/video/golden-state-valkyries-win-wnba-championship
+                                    - generic: 0:55
+                                  - generic: Golden State Valkyries win WNBA championship
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/11/01/politics/video/haley-stevens-endorses-mike-rogers-digvid-vrtc
+                                    - generic: 1:37
+                                  - generic: Haley Stevens endorses Mike Rogers
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/11/01/politics/video/dan-s-sullivan-says-he-will-accept-election-results
+                                    - generic: 1:27
+                                  - generic: Sen. Dan Sullivan says he will accept election results
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/11/01/politics/video/billionaire-tax-divides-voters-california-michaelson-digvid-vrtc
+                                    - generic: 1:17
+                                  - generic: ‘Billionaire tax’ divides voters in California
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/11/01/politics/video/alaskas-is-about-more-than-just-two-dan-sullivans
+                                    - generic: 1:15
+                                  - generic: Breaking down Alaska’s senate race controversy
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/11/01/entertainment/video/michael-douglas-activism-coming-up-ftrs-digvid-vrtc
+                                    - generic: 0:46
+                                  - generic: Why Michael Douglas thinks current state of world is the worst of his lifetime
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/11/01/entertainment/video/tom-hanks-gets-spooky-as-mr-pumpkins-on-snl-digvid-vrtc
+                                    - generic: 1:06
+                                  - generic: Tom Hanks gets spooky as Mr. Pumpkins on ‘SNL’
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/11/01/us/video/jd-vance-celebrates-halloween-as-dumbledore-digvid-vrtc-hnk
+                                    - generic: 0:13
+                                  - generic: JD Vance celebrates Halloween as Dumbledore
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/11/01/politics/video/the-fight-for-battleground-state-pennsylvania-digvid-vrtc
+                                    - generic: 1:39
+                                  - generic: The fight for battleground state Pennsylvania
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/11/01/politics/video/alaska-sen-sullivan-accuses-democrats-of-same-name-voter-deceit-digvid-vrtc-hnk
+                                    - generic: 1:17
+                                  - generic: Alaska Sen. Sullivan accuses Democrats of same-name voter deceit
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/10/31/politics/video/trump-takes-el-sayed-question-at-mar-a-lago-halloween-party-digvid-vrtc
+                                    - generic: 0:53
+                                  - generic: Trump takes El-Sayed question at Mar-a-Lago Halloween party
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/10/31/politics/video/talarico-you-want-a-senator-who-serves-you-or-serves-billionaire-mega-donors-digvid-vrtc
+                                    - generic: 0:29
+                                  - generic: Talarico slams Paxton as ‘bought and paid for’ by billionaires
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/10/31/politics/video/can-democrats-flip-iowa
+                                    - generic: 2:32
+                                  - generic: Can Democrats flip Iowa?
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/10/31/world/video/meanwhile-in-asia-nk-succession-01-hnk-vrtc-digvid
+                                    - generic: 1:33
+                                  - generic: Why was Kim Jong Un’s half-brother killed in an airport?
+                                - listitem:
+                                  - link:
+                                    - /url: /2026/10/31/politics/video/comedians-poke-fun-alaska-senate-election-controversy-hignfy-vrtc
+                                    - generic: 1:42
+                                  - generic: Comedians poke fun of Alaska’s Senate election controversy
+                  - generic:
+                    - generic:
+                      - heading [level=2]:
+                        - link:
+                          - /url: https://www.cnn.com/cnn-underscored
+                          - text: CNN Underscored
+                  - generic:
+                    - generic:
+                      - heading [level=2]:
+                        - link:
+                          - /url: https://www.cnn.com/business
+                          - text: Business
+                  - generic:
+                    - generic:
+                      - generic:
+                        - link:
+                          - /url: https://www.cnn.com/weather
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - heading [level=2]: Streaming Now
+                          - generic:
+                            - generic:
+                              - list:
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/videos/title-2181004?episode=2181009&source=subwall:vod:episode-2181009&iid=related-embed_streaming-now
+                                  - link:
+                                    - /url: https://www.cnn.com/videos/title-2181004?episode=2181009&source=subwall:vod:episode-2181009&iid=related-embed_streaming-now
+                                    - generic: How a killer terrorized Northern California in the late 1960s
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/videos/title-2572881?episode=2572963&source=subwall:vod:episode-2572963&iid=related-embed_streaming-now
+                                  - link:
+                                    - /url: https://www.cnn.com/videos/title-2572881?episode=2572963&source=subwall:vod:episode-2572963&iid=related-embed_streaming-now
+                                    - generic: Why millions of Americans are becoming witches
+                                - listitem:
+                                  - link:
+                                    - /url: https://cnn.com/videos/title-2181031?iid=related-embed_streaming-now
+                                  - link:
+                                    - /url: https://cnn.com/videos/title-2181031?iid=related-embed_streaming-now
+                                    - generic: When a wife is murdered, sometimes we never find the killer
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/videos/title-2569563?iid=related-embed_streaming-now
+                                  - link:
+                                    - /url: https://www.cnn.com/videos/title-2569563?iid=related-embed_streaming-now
+                                    - generic: How a family lunch turned into a murder investigation
+                  - generic:
+                    - generic:
+                      - heading [level=2]: Paid Content
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - link:
+                                    - /url: https://bleacherreport.com/?utm_source=cnn.com&utm_medium=referral&utm_campaign=editorial
+                                    - heading [level=2]: Bleacher Report
+                                - generic:
+                                  - generic:
+                                    - list:
+                                      - listitem:
+                                        - link:
+                                          - /url: https://bleacherreport.com/articles/25528217-joe-burrow-becomes-1st-75-years-these-incredible-box-score-stats-bengals-win-vs-titans?utm_source=cnn.com&utm_medium=referral&utm_campaign=editorial
+                                          - generic: AP
+                                        - link:
+                                          - /url: https://bleacherreport.com/articles/25528217-joe-burrow-becomes-1st-75-years-these-incredible-box-score-stats-bengals-win-vs-titans?utm_source=cnn.com&utm_medium=referral&utm_campaign=editorial
+                                          - generic: Joe Burrow puts up historic stats in win
+                                      - listitem:
+                                        - link:
+                                          - /url: https://bleacherreport.com/articles/25528176-jack-campbell-hospitalized-after-being-carted-scary-injury-lions-vs-vikings?utm_source=cnn.com&utm_medium=referral&utm_campaign=editorial
+                                          - generic: Lions LB seriously injured following collision
+                                      - listitem:
+                                        - link:
+                                          - /url: https://bleacherreport.com/articles/25528180-mike-norvell-fired-fsu-latest-contract-buyout-info-and-top-replacements-after-clemson-loss?utm_source=cnn.com&utm_medium=referral&utm_campaign=editorial
+                                          - generic: FSU fires head coach Mike Norvell
+                                      - listitem:
+                                        - link:
+                                          - /url: https://bleacherreport.com/articles/25527910-christian-yelich-brewers-make-cameo-snl-weekend-update-trending-video-after-world-series-win?utm_source=cnn.com&utm_medium=referral&utm_campaign=editorial
+                                          - generic: World Series champs make SNL cameo
+                                      - listitem:
+                                        - link:
+                                          - /url: https://bleacherreport.com/articles/25527944-dabo-swinney-rips-airplane-banner-demanding-fsu-fire-mike-norvell-embarrassing-and-shameful?utm_source=cnn.com&utm_medium=referral&utm_campaign=editorial
+                                          - generic: Clemson HC angry over FSU plane banner
+                  - generic:
+                    - generic:
+                      - heading [level=2]: More from CNN
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - heading [level=2]: Sign up for our newsletters
+                          - generic:
+                            - generic:
+                              - list:
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/newsletters/5-things?source=growth_nl-acq_hp-rail__new_v1
+                                  - link:
+                                    - /url: https://www.cnn.com/newsletters/5-things?source=growth_nl-acq_hp-rail__new_v1
+                                    - generic: Five Things AM
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/newsletters/breaking-news-alerts-signup?source=growth_nl-acq_hp-rail__new_v1
+                                  - link:
+                                    - /url: https://www.cnn.com/newsletters/breaking-news-alerts-signup?source=growth_nl-acq_hp-rail__new_v1
+                                    - generic: Breaking News
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/newsletters/what-matters?source=growth_nl-acq_hp-rail__new_v1
+                                  - link:
+                                    - /url: https://www.cnn.com/newsletters/what-matters?source=growth_nl-acq_hp-rail__new_v1
+                                    - generic: What Matters
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/newsletters/weather-alerts?source=growth_nl-acq_hp-rail__new_v1
+                                  - link:
+                                    - /url: https://www.cnn.com/newsletters/weather-alerts?source=growth_nl-acq_hp-rail__new_v1
+                                    - generic: CNN Weather
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/newsletters/big-style-newsletter-landing-page?source=growth_nl-acq_hp-rail__new_v1
+                                  - link:
+                                    - /url: https://www.cnn.com/newsletters/big-style-newsletter-landing-page?source=growth_nl-acq_hp-rail__new_v1
+                                    - generic: Big Style
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/newsletters/engagement-party-newsletter-landing-page?source=growth_nl-acq_hp-rail__new_v1
+                                  - link:
+                                    - /url: https://www.cnn.com/newsletters/engagement-party-newsletter-landing-page?source=growth_nl-acq_hp-rail__new_v1
+                                    - generic: Engagement Party
+                  - generic:
+                    - generic:
+                      - heading [level=2]: Paid Partner Content
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - link:
+                              - /url: https://www.cnn.com/games
+                              - heading [level=2]: CNN Games + Quizzes
+                          - generic:
+                            - generic:
+                              - list:
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/games/play/daily-sudoku
+                                    - generic: Sudoku
+                                  - link:
+                                    - /url: https://www.cnn.com/games/play/daily-sudoku
+                                    - generic: A cross-number crossword that will challenge your brain
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/games/play/gd-cnn-where-on-earth
+                                    - generic: Where On Earth
+                                  - link:
+                                    - /url: https://www.cnn.com/games/play/gd-cnn-where-on-earth
+                                    - generic: Puzzle your way around the planet
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/games/play/daily-crossword?utm_source=games_acq_web_homepage_morezone
+                                    - generic: Today's crossword
+                                  - link:
+                                    - /url: https://www.cnn.com/games/play/daily-crossword?utm_source=games_acq_web_homepage_morezone
+                                    - generic: No pencil or eraser required
+                                - listitem:
+                                  - link:
+                                    - /url: https://www.cnn.com/games/play/photo-shuffle
+                                    - generic: Photo Shuffle
+                                  - link:
+                                    - /url: https://www.cnn.com/games/play/photo-shuffle
+                                    - generic: Put the pieces together in this jigsaw challenge
+                  - generic:
+                    - generic:
+                      - heading [level=2]: In case you missed it
+    - generic:
+      - contentinfo:
+        - generic:
+          - generic:
+            - search:
+              - textbox:
+                - /placeholder: Search CNN...
+              - button
+          - link: Subscribe
+          - generic:
+            - navigation:
+              - generic:
+                - link: Sign in
+          - separator
+          - link:
+            - /url: https://www.cnn.com/audio
+            - text: Listen
+          - link:
+            - /url: https://www.cnn.com/watch
+            - text: Watch
+          - separator
+          - generic:
+            - navigation:
+              - list:
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/us
+                    - text: US
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/world
+                    - text: World
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/politics
+                    - text: Politics
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/business
+                    - text: Business
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/markets
+                    - text: Markets
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/health
+                    - text: Health
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/cnn-underscored
+                    - text: CNN Underscored
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/entertainment
+                    - text: Entertainment
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/business/tech
+                    - text: Tech
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/style
+                    - text: Style
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/travel
+                    - text: Travel
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/sports
+                    - text: Sports
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/science
+                    - text: Science
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/climate
+                    - text: Climate
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/weather
+                    - text: Weather
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/world/europe/ukraine
+                    - text: Ukraine-Russia War
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/world/middleeast/israel
+                    - text: Israel-Hamas War
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/watch
+                    - text: Watch
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/audio
+                    - text: Listen
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/games
+                    - text: Games
+                - listitem:
+                  - link:
+                    - /url: https://www.cnn.com/about
+                    - text: About CNN
+          - separator
+          - generic:
+            - generic:
+              - generic:
+                - link:
+                  - /url: https://www.cnn.com
+            - generic:
+              - generic:
+                - generic:
+                  - text: Follow CNN
+                  - list:
+                    - listitem:
+                      - link:
+                        - /url: https://facebook.com/CNN
+                    - listitem:
+                      - link:
+                        - /url: https://twitter.com/CNN
+                    - listitem:
+                      - link:
+                        - /url: https://instagram.com/CNN
+                    - listitem:
+                      - link:
+                        - /url: https://www.tiktok.com/@cnn?lang=en
+                    - listitem:
+                      - link:
+                        - /url: https://www.linkedin.com/company/cnn
+                    - listitem:
+                      - link:
+                        - /url: https://www.threads.com/@cnn
+          - generic:
+            - generic:
+              - generic: Download the CNN app
+              - generic:
+                - link:
+                  - /url: https://cnn.onelink.me/PVpf/q9j1odhf
+                - link:
+                  - /url: https://cnn.onelink.me/PVpf/43qg6lsp
+          - separator
+          - navigation:
+            - link:
+              - /url: https://www.cnn.com/terms
+              - text: Terms of Use
+            - link:
+              - /url: https://www.cnn.com/privacy
+              - text: Privacy Policy
+            - link:
+              - /url: "#"
+              - text: Do Not Sell Or Share My Personal Information
+            - link:
+              - /url: https://www.cnn.com/ad-choices
+              - text: Ad Choices
+            - link:
+              - /url: https://advertising.wbd.com
+              - text: Advertise With Us
+            - link:
+              - /url: https://www.cnn.com/accessibility
+              - text: Accessibility & CC
+            - link:
+              - /url: https://www.cnn.com/about
+              - text: About
+            - link:
+              - /url: https://www.cnn.com/subscription?source=sub_web_footerlink-link
+              - text: Subscribe
+            - link:
+              - /url: https://www.cnn.com/newsletters
+              - text: Newsletters
+            - link:
+              - /url: https://www.cnn.com/transcripts
+              - text: Transcripts
+            - link:
+              - /url: https://help.cnn.com/
+              - text: Help Center
+            - link:
+              - /url: https://www.cnn.com/sitemap
+              - text: Sitemap
+          - paragraph: © 2026 Cable News Network. All Rights Reserved. CNN Sans ™ & © 2016 Cable News Network.
+  - dialog [ref=e4]:
+    - heading [level=2] [ref=e6]: Legal Terms and Privacy
+    - document [ref=e7]:
+      - text: By clicking "Agree", you agree to the
+      - link [ref=e8] [cursor=pointer]:
+        - /url: /terms
+        - text: Terms of Use
+      - text: and to the collection and use of your information by cookies and similar technologies, as set forth in our
+      - link [ref=e9] [cursor=pointer]:
+        - /url: /privacy
+        - text: Privacy Policy
+      - text: . Accepting does not impact privacy choices you may have under state laws. Learn more in our
+      - link [ref=e10] [cursor=pointer]:
+        - /url: /usstatesupplement
+        - text: US State Supplement
+      - text: .
+    - button [ref=e11] [cursor=pointer]: Agree

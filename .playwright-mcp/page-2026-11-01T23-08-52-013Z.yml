@@ -1,0 +1,68 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - heading "HookHub" [level=1] [ref=e4]
+      - paragraph [ref=e5]: Discover open-source hooks for Claude Code.
+    - main [ref=e6]:
+      - paragraph [ref=e7]: 5 hooks
+      - list [ref=e8]:
+        - listitem [ref=e9]:
+          - article [ref=e10]:
+            - generic [ref=e11]:
+              - generic [ref=e12]: Security
+              - heading "Claude Code Hooks (karanb192)" [level=2] [ref=e13]
+            - paragraph [ref=e14]: Collection of hooks for safety, cost control, observability and productivity, plus an installable plugin marketplace.
+            - link "View karanb192/claude-code-hooks on GitHub (opens in new tab)" [ref=e15] [cursor=pointer]:
+              - /url: https://github.com/karanb192/claude-code-hooks
+              - generic [aria-hidden] [ref=e16]: View on GitHub ↗
+              - generic [aria-hidden] [ref=e17]: karanb192/claude-code-hooks
+        - listitem [ref=e19]:
+          - article [ref=e20]:
+            - generic [ref=e21]:
+              - generic [ref=e22]: Productivity
+              - heading "Claude Code Hooks Mastery" [level=2] [ref=e23]
+            - paragraph [ref=e24]: Worked examples covering every major hook event, useful as a learning reference and starting point.
+            - link "View disler/claude-code-hooks-mastery on GitHub (opens in new tab)" [ref=e25] [cursor=pointer]:
+              - /url: https://github.com/disler/claude-code-hooks-mastery
+              - generic [aria-hidden] [ref=e26]: View on GitHub ↗
+              - generic [aria-hidden] [ref=e27]: disler/claude-code-hooks-mastery
+        - listitem [ref=e29]:
+          - article [ref=e30]:
+            - generic [ref=e31]:
+              - generic [ref=e32]: Security
+              - heading "Claude Code Safety Hooks" [level=2] [ref=e33]
+            - paragraph [ref=e34]: The original 16 safety hooks collected from long autonomous Claude Code runs.
+            - link "View yurukusa/claude-code-hooks on GitHub (opens in new tab)" [ref=e35] [cursor=pointer]:
+              - /url: https://github.com/yurukusa/claude-code-hooks
+              - generic [aria-hidden] [ref=e36]: View on GitHub ↗
+              - generic [aria-hidden] [ref=e37]: yurukusa/claude-code-hooks
+        - listitem [ref=e39]:
+          - article [ref=e40]:
+            - generic [ref=e41]:
+              - generic [ref=e42]: Other
+              - heading "Curated Hook Scripts" [level=2] [ref=e43]
+            - paragraph [ref=e44]: Small collection of shell-based hook scripts for Claude Code.
+            - link "View normful/claude-code-curated-hooks on GitHub (opens in new tab)" [ref=e45] [cursor=pointer]:
+              - /url: https://github.com/normful/claude-code-curated-hooks
+              - generic [aria-hidden] [ref=e46]: View on GitHub ↗
+              - generic [aria-hidden] [ref=e47]: normful/claude-code-curated-hooks
+        - listitem [ref=e49]:
+          - article [ref=e50]:
+            - generic [ref=e51]:
+              - generic [ref=e52]: Notifications
+              - heading "Sound Notification Hooks" [level=2] [ref=e53]
+            - paragraph [ref=e54]: Hooks that play audio alerts on macOS, Windows and Linux when Claude Code needs attention.
+            - link "View pascalporedda/awesome-claude-code on GitHub (opens in new tab)" [ref=e55] [cursor=pointer]:
+              - /url: https://github.com/pascalporedda/awesome-claude-code
+              - generic [aria-hidden] [ref=e56]: View on GitHub ↗
+              - generic [aria-hidden] [ref=e57]: pascalporedda/awesome-claude-code
+    - contentinfo [ref=e59]:
+      - generic [ref=e60]:
+        - paragraph [ref=e61]: HookHub links to third-party code. Review any hook before installing it. HookHub doesn't audit or endorse listed hooks.
+        - paragraph [ref=e62]:
+          - link "Add a hook" [ref=e63] [cursor=pointer]:
+            - /url: https://github.com/chl218/scratch
+          - text: by opening a pull request that edits
+          - code [ref=e64]: data/hooks.json
+          - text: .
+  - alert [ref=e65]

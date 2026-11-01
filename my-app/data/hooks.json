@@ -1,0 +1,37 @@
+[
+  {
+    "id": "karanb192-claude-code-hooks",
+    "name": "Claude Code Hooks (karanb192)",
+    "category": "Security",
+    "description": "Collection of hooks for safety, cost control, observability and productivity, plus an installable plugin marketplace.",
+    "repoUrl": "https://github.com/karanb192/claude-code-hooks"
+  },
+  {
+    "id": "yurukusa-safety-hooks",
+    "name": "Claude Code Safety Hooks",
+    "category": "Security",
+    "description": "The original 16 safety hooks collected from long autonomous Claude Code runs.",
+    "repoUrl": "https://github.com/yurukusa/claude-code-hooks"
+  },
+  {
+    "id": "awesome-claude-code-sounds",
+    "name": "Sound Notification Hooks",
+    "category": "Notifications",
+    "description": "Hooks that play audio alerts on macOS, Windows and Linux when Claude Code needs attention.",
+    "repoUrl": "https://github.com/pascalporedda/awesome-claude-code"
+  },
+  {
+    "id": "claude-code-hooks-mastery",
+    "name": "Claude Code Hooks Mastery",
+    "category": "Productivity",
+    "description": "Worked examples covering every major hook event, useful as a learning reference and starting point.",
+    "repoUrl": "https://github.com/disler/claude-code-hooks-mastery"
+  },
+  {
+    "id": "curated-hook-scripts",
+    "name": "Curated Hook Scripts",
+    "category": "Other",
+    "description": "Small collection of shell-based hook scripts for Claude Code.",
+    "repoUrl": "https://github.com/normful/claude-code-curated-hooks"
+  }
+]

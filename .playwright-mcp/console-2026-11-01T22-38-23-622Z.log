@@ -1,0 +1,71 @@
+[    2086ms] [INFO] {browserVersion: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36} {file: /index.js} {_label: INFO} storeTid: no storage consent, clearing stored TID @ https://www.cnn.com/:27401
+[    3203ms] [LOG] AdFuelError event fired: CustomEvent @ https://www.cnn.com/media/sites/js/bundles/cnn-adfuel-body-5cb5aa4c17e452a60f10ee22c4943a8b9d955029b03de4bb0dbc5ae160ec8e1e.min.js:0
+[    3204ms] [ERROR] %c TOS was NOT accepted, AdFuel will not load. background: red;color:white; @ https://www.cnn.com/media/sites/js/bundles/cnn-adfuel-body-5cb5aa4c17e452a60f10ee22c4943a8b9d955029b03de4bb0dbc5ae160ec8e1e.min.js:0
+[    3204ms] [LOG] AdFuelError event fired: CustomEvent @ https://www.cnn.com/media/sites/js/bundles/cnn-adfuel-body-5cb5aa4c17e452a60f10ee22c4943a8b9d955029b03de4bb0dbc5ae160ec8e1e.min.js:0
+[    4195ms] [WARNING] [GSI_LOGGER]: Your client application uses one of the Google One Tap prompt UI status methods that may stop functioning when FedCM becomes mandatory. Refer to the migration guide to update your code accordingly and opt-in to FedCM to test your changes. Learn more: https://developers.google.com/identity/gsi/web/guides/fedcm-migration?s=dc#display_moment and https://developers.google.com/identity/gsi/web/guides/fedcm-migration?s=dc#skipped_moment @ https://accounts.google.com/gsi/client:87
+[    4487ms] [ERROR] Not signed in with the identity provider. @ https://www.cnn.com/:0
+[    4758ms] [ERROR] FAVE -->> KeyValueStore: Error invoking key/value pair function. TypeError: window.turner_getGuid is not a function
+    at https://www.cnn.com/:27210:980
+    at v._processKeyValuePairs (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:162559)
+    at v.getKeyValuePairs (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:164410)
+    at R._updateAdKvpsConfig (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:137514)
+    at R._updateAudioKeyValuePairs (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:222582)
+    at R._setSound (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:212609)
+    at R._handleCallback (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:206113)
+    at https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:177210 @ https://registry.api.cnn.io/bundles/fave/latest-4.x/js:0
+[    4761ms] [ERROR] FAVE -->> KeyValueStore: Error invoking key/value pair function. TypeError: window.turner_getGuid is not a function
+    at https://www.cnn.com/:27210:980
+    at v._processKeyValuePairs (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:162559)
+    at v.getKeyValuePairs (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:164410)
+    at R._updateAdKvpsConfig (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:137514)
+    at R._updateAudioKeyValuePairs (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:222582)
+    at R._setAdsConfigurations (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:185453)
+    at R._setAdsConfigurations (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:134475)
+    at R._setSource (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:130308)
+    at R._loadMedia (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:130028)
+    at Object.<anonymous> (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:182148) @ https://registry.api.cnn.io/bundles/fave/latest-4.x/js:0
+[    4764ms] [ERROR] FAVE -->> KeyValueStore: Error invoking key/value pair function. TypeError: window.turner_getGuid is not a function
+    at https://www.cnn.com/:27210:980
+    at v._processKeyValuePairs (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:162559)
+    at v.getKeyValuePairs (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:164410)
+    at R._setAdsConfigurations (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:185753)
+    at async R._setAdsConfigurations (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:134463)
+    at async R._setSource (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:130297) @ https://registry.api.cnn.io/bundles/fave/latest-4.x/js:0
+[    4788ms] [LOG] MMSmartStreaming- Web SDK 2.2.1 @ https://registry.api.cnn.io/bundles/fave/vendor-ccb335e9/vendor:0
+[    4820ms] [ERROR] FAVE -->> KeyValueStore: Error invoking key/value pair function. TypeError: window.turner_getGuid is not a function
+    at https://www.cnn.com/:27210:980
+    at v._processKeyValuePairs (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:162559)
+    at v.getKeyValuePairs (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:164410)
+    at R._updateAdKvpsConfig (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:137514)
+    at R._updateAudioKeyValuePairs (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:222582)
+    at https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:194666
+    at i.execute (https://registry.api.cnn.io/bundles/fave/vendor-ccb335e9/vendor:1:1146685)
+    at o.dispatch (https://registry.api.cnn.io/bundles/fave/vendor-ccb335e9/vendor:1:1148789)
+    at o.dispatch (https://registry.api.cnn.io/bundles/fave/vendor-ccb335e9/vendor:1:1146510)
+    at l._onPlayerVolumeChange (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:249522) @ https://registry.api.cnn.io/bundles/fave/latest-4.x/js:0
+[    4821ms] [ERROR] FAVE -->> KeyValueStore: Error invoking key/value pair function. TypeError: window.turner_getGuid is not a function
+    at https://www.cnn.com/:27210:980
+    at v._processKeyValuePairs (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:162559)
+    at v.getKeyValuePairs (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:164410)
+    at R._updateAdKvpsConfig (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:137514)
+    at R._updateAudioKeyValuePairs (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:222582)
+    at https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:194835
+    at i.execute (https://registry.api.cnn.io/bundles/fave/vendor-ccb335e9/vendor:1:1146685)
+    at o.dispatch (https://registry.api.cnn.io/bundles/fave/vendor-ccb335e9/vendor:1:1148789)
+    at o.dispatch (https://registry.api.cnn.io/bundles/fave/vendor-ccb335e9/vendor:1:1146510)
+    at l._onPlayerMuteChange (https://registry.api.cnn.io/bundles/fave/boltInstance-3ae8be52/boltInstance:1:249592) @ https://registry.api.cnn.io/bundles/fave/latest-4.x/js:0
+[    4848ms] [ERROR] [GSI_LOGGER]: FedCM get() rejects with NetworkError: Error retrieving a token. @ https://accounts.google.com/gsi/client:88
+[    5710ms] [WARNING] com.microsoft.playready.recommendation: Internal testing is highly recommended prior to enabling PlayReady playback on Windows. Failure to do so may cause application instability or playback errors.
+
+Before generating a request, setServerCertificate() must be called with a valid server certificate. Otherwise, generateRequest() could fail. @ https://registry.api.cnn.io/bundles/fave/boltPlayer-6e360a3f/boltPlayer:0
+[    5711ms] [WARNING] It is recommended that a robustness level be specified. Not specifying the robustness level could result in unexpected behavior. @ https://registry.api.cnn.io/bundles/fave/boltPlayer-6e360a3f/boltPlayer:0
+[    6156ms] [ERROR] Player | Player received error, stopping playback session: 7ddf27d5-d937-4243-a975-6d0dda670809 code:1K-0043 message: NoKeySystemAvailable: No key system available on device undefined @ https://registry.api.cnn.io/bundles/fave/boltPlayer-6e360a3f/boltPlayer:1363
+[   53829ms] [ERROR] {componentName: live-story-updates, file: /index.js, id: undefined} {stack: Error: MaxRetryCount (5) achieved
+    at fetchCont…7610:8874)
+    at https://www.cnn.com/:27610:9943, _label: ERROR} failed to fetch and render updates. MaxRetryCount (5) achieved @ https://www.cnn.com/:27401
+[   63840ms] [ERROR] {componentName: live-story-updates, file: /index.js, id: undefined} {stack: Error: MaxRetryCount (6) achieved
+    at fetchCont…610:8874)
+    at https://www.cnn.com/:27610:10853, _label: ERROR} failed to fetch and render updates. MaxRetryCount (6) achieved @ https://www.cnn.com/:27401
+[   75011ms] TypeError: Cannot read properties of undefined (reading 'track')
+    at c (https://www.cnn.com/:27620:1243)
+    at T (https://www.cnn.com/:27620:1444)
