@@ -1,6 +1,6 @@
 # igdl: Instagram post downloader
 
-A terminal tool that downloads all posts (photos, videos, carousels) from an Instagram user into a local folder, along with each post's caption and metadata. It is built on [instaloader](https://instaloader.github.io/).
+A terminal tool that downloads an Instagram user's posts into a local folder, along with each post's caption and metadata. By default it saves **images only**. Add `--videos` to include videos. It is built on [instaloader](https://instaloader.github.io/).
 
 ## Install
 
@@ -14,20 +14,33 @@ python -m venv .venv
 
 ```powershell
 igdl USERNAME [-o DIR] [--cookies BROWSER | --sessionid | --login IG_USER]
-              [--limit N] [--no-videos] [--no-metadata] [-q]
+              [--limit N] [--videos] [--no-metadata] [-q]
 ```
 
 Examples:
 
 ```powershell
-igdl natgeo --limit 10                # newest 10 posts -> downloads/natgeo/
-igdl natgeo -o D:\ig                  # all posts -> D:\ig\natgeo\
+igdl natgeo --limit 10                # newest 10 image posts -> downloads/natgeo/
+igdl natgeo --limit 10 --videos       # newest 10 posts, videos included
+igdl natgeo -o D:\ig                  # all image posts -> D:\ig\natgeo\
 igdl natgeo --cookies firefox         # use your Firefox login (recommended)
 igdl some_private_friend --sessionid  # paste your session cookie at a hidden prompt
 ```
 
+### Images vs. videos
+
+| | Default (images only) | With `--videos` |
+|---|---|---|
+| Photo posts | saved | saved |
+| Video and reel posts | skipped (not counted toward `--limit`) | `.mp4` + cover image |
+| Video slides in a carousel | skipped | `.mp4` + cover image |
+
+`--limit N` gives the N most recent posts by date. Pinned posts are only included if they fall in that range.
+
+### Output files
+
 Each post is saved as `YYYY-MM-DD_HH-MM-SS_<shortcode>` with these files:
-- `.jpg` / `.mp4`: the media. Carousels get `_1`, `_2`, … suffixes.
+- `.jpg` (and `.mp4` with `--videos`): the media. Carousels get `_1`, `_2`, … suffixes.
 - `.txt`: the caption.
 - `.json`: the full post metadata.
 

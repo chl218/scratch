@@ -68,7 +68,10 @@ def build_parser() -> argparse.ArgumentParser:
         help="path to the browser's cookie database, if it isn't in the default profile",
     )
     p.add_argument("--limit", type=positive_int, help="only download the newest N posts")
-    p.add_argument("--no-videos", action="store_true", help="skip video files")
+    p.add_argument(
+        "--videos", action="store_true",
+        help="also download video posts and videos inside carousels (default: images only)",
+    )
     p.add_argument("--no-metadata", action="store_true", help="skip caption .txt and .json files")
     p.add_argument("-q", "--quiet", action="store_true", help="less output")
     p.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
@@ -96,7 +99,7 @@ def main(argv: list[str] | None = None) -> int:
     from . import downloader
 
     loader = downloader.build_loader(
-        args.output, videos=not args.no_videos, metadata=not args.no_metadata, quiet=args.quiet
+        args.output, videos=args.videos, metadata=not args.no_metadata, quiet=args.quiet
     )
     log = (lambda _m: None) if args.quiet else (lambda m: print(strip_control(m)))
     count = 0

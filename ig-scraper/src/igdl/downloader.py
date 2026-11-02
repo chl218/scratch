@@ -25,14 +25,18 @@ from .security import (
 
 
 def build_loader(
-    output_dir: Path, videos: bool = True, metadata: bool = True, quiet: bool = False
+    output_dir: Path, videos: bool = False, metadata: bool = True, quiet: bool = False
 ) -> instaloader.Instaloader:
-    """Create an Instaloader that saves posts to output_dir/<username>/."""
+    """Create an Instaloader that saves posts to output_dir/<username>/.
+
+    With videos=False (the default) only photos are saved: video posts are skipped by
+    download_user, and video slides inside carousels are skipped here.
+    """
     loader = instaloader.Instaloader(
         dirname_pattern=str(Path(output_dir) / "{target}"),
         filename_pattern="{date_utc:%Y-%m-%d_%H-%M-%S}_{shortcode}",
         download_videos=videos,
-        download_video_thumbnails=True,
+        download_video_thumbnails=videos,
         download_geotags=False,
         download_comments=False,
         save_metadata=metadata,
@@ -144,13 +148,21 @@ def login_with_sessionid(loader: instaloader.Instaloader, raw: str) -> str:
     return login_with_cookies(loader, {"sessionid": sessionid})
 
 
+# Instagram lets a profile pin up to 3 posts, which it always lists first.
+MAX_PINNED = 3
+
+
 def download_user(
     loader: instaloader.Instaloader,
     username: str,
     limit: int | None = None,
     log: Callable[[str], None] = print,
 ) -> int:
-    """Download a user's posts, newest first. Returns how many were processed."""
+    """Download a user's posts, newest first. Returns how many were saved.
+
+    Video posts are skipped unless the loader was built with videos=True, and
+    --limit counts only the posts that are kept.
+    """
     profile = instaloader.Profile.from_username(loader.context, username)
 
     if profile.is_private and not profile.followed_by_viewer:
@@ -158,16 +170,24 @@ def download_user(
             f"Profile {profile.username} is private and you don't follow it."
         )
 
+    include_videos = loader.download_videos
     known = profile.mediacount  # can be None when not logged in
     if limit is not None:
-        total = str(min(limit, known)) if known is not None else str(limit)
+        total = str(limit) if known is None else str(min(limit, known))
+    elif include_videos and known is not None:
+        total = str(known)
     else:
-        total = str(known) if known is not None else "?"
-    log(f"Downloading {total} post(s) from @{profile.username}")
+        total = "?"  # unknown until we've seen which posts are videos
+    kind = "post(s)" if include_videos else "image post(s)"
+    log(f"Downloading {total} {kind} from @{profile.username}")
 
     posts = profile.get_posts()
+    if not include_videos:
+        posts = (p for p in posts if not p.is_video)
     if limit is not None:
-        posts = islice(posts, limit)
+        # Pinned posts come first regardless of date, so read a few extra and sort.
+        candidates = list(islice(posts, limit + MAX_PINNED))
+        posts = sorted(candidates, key=lambda p: p.date_utc, reverse=True)[:limit]
 
     count = 0
     for post in posts:
