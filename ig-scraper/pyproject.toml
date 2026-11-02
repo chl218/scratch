@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "igdl"
+version = "0.1.0"
+description = "Download all posts from an Instagram user to a local directory"
+requires-python = ">=3.10"
+dependencies = ["instaloader>=4.14", "browser_cookie3>=0.19"]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.scripts]
+igdl = "igdl.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

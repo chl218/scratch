@@ -1,0 +1,8 @@
+.venv/
+downloads/
+*.session
+session-*
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.env
