@@ -124,6 +124,110 @@ Remove-Item Env:IGDL_SESSIONID     # clear it when done
 
 `--login IG_USER` asks for the password (and a 2FA code if needed). It saves a session file in `%LOCALAPPDATA%\Instaloader\` so later runs don't ask again. That file is **not encrypted**, so prefer Options 1 or 2.
 
+## Architecture
+
+`igdl` is a thin layer over [instaloader](https://instaloader.github.io/). It has three modules:
+
+| Module | Job |
+|--------|-----|
+| [`cli.py`](src/igdl/cli.py) | Parses arguments, validates the username, picks a login method, and turns errors into messages and exit codes. |
+| [`downloader.py`](src/igdl/downloader.py) | Configures instaloader, handles the three login methods, and runs the download loop (images-only filter, `--limit`). |
+| [`security.py`](src/igdl/security.py) | Small pure helpers: domain checks, `sessionid` cleanup, a cookie jar scoped to `*.instagram.com`, and stripping terminal control characters. |
+
+### Components
+
+```mermaid
+flowchart LR
+    user(["Terminal<br/>igdl USERNAME ..."])
+
+    subgraph igdl["igdl package"]
+        cli["cli.py<br/>parse args · validate username<br/>map errors to exit codes"]
+        dl["downloader.py<br/>build_loader · login methods<br/>download_user"]
+        sec["security.py<br/>domain check · sessionid check<br/>scoped cookies · strip_control"]
+    end
+
+    subgraph libs["Libraries"]
+        il["instaloader<br/>Instagram API client"]
+        bc3["browser_cookie3<br/>reads browser cookie DB"]
+    end
+
+    subgraph local["This computer"]
+        browser[("Browser cookie store<br/>Firefox / Chrome / Edge ...")]
+        out[("downloads/&lt;user&gt;/<br/>.jpg · .mp4 · .txt · .json")]
+        sess[("%LOCALAPPDATA%\Instaloader<br/>session file (--login only)")]
+    end
+
+    subgraph ig["Instagram"]
+        api["www / i.instagram.com<br/>profile + post API"]
+        cdn["CDN<br/>image + video files"]
+    end
+
+    user --> cli
+    cli --> dl
+    cli -.->|uses| sec
+    dl -.->|uses| sec
+    dl -->|"--cookies"| bc3
+    bc3 --> browser
+    dl --> il
+    il -->|"session cookies<br/>HTTPS, *.instagram.com only"| api
+    il -->|"no cookies"| cdn
+    il --> out
+    il <-.->|"--login"| sess
+```
+
+### Login paths
+
+All three paths end in the same place: a session whose cookies are only sent to `*.instagram.com` over HTTPS.
+
+```mermaid
+flowchart TD
+    start{"Login option?"}
+    start -->|none| anon["Anonymous session<br/>(Instagram may limit results)"]
+    start -->|"--cookies BROWSER"| read["read_browser_cookies<br/>keep exact instagram.com domains only"]
+    start -->|"--sessionid"| sid["$IGDL_SESSIONID or hidden prompt<br/>normalize_sessionid (format check)"]
+    start -->|"--login IG_USER"| file{"Saved session file?"}
+
+    file -->|yes| load["load session file"]
+    file -->|no| pw["password prompt (+ 2FA)<br/>save session file"]
+    load -->|expired| pw
+
+    read --> lwc["login_with_cookies"]
+    sid --> lwc
+    lwc --> scope["scope_session_cookies<br/>.instagram.com · HTTPS only"]
+    load --> scope
+    pw --> scope
+    scope --> check["test_login → logged-in username"]
+    check --> ready(["Ready to download"])
+    anon --> ready
+```
+
+`--cookies` and `--sessionid` keep the session in memory only. `--login` is the only path that writes a secret to disk.
+
+### Download pipeline
+
+```mermaid
+flowchart LR
+    feed["profile.get_posts()<br/>pinned posts first,<br/>then newest-first"]
+    vid{"--videos?"}
+    drop["drop video posts"]
+    lim{"--limit N?"}
+    take["read N + 3 posts<br/>sort by date<br/>keep newest N"]
+    post["download_post<br/>per post"]
+    files[("&lt;user&gt;_DATE_CODE_k.jpg<br/>.mp4 with --videos<br/>.txt + .json unless --no-metadata")]
+
+    feed --> vid
+    vid -->|no| drop --> lim
+    vid -->|yes| lim
+    lim -->|yes| take --> post
+    lim -->|"no: all posts"| post
+    post --> files
+```
+
+- **Images only (default):** video posts are dropped before `--limit` counts posts. Video slides inside carousels are also skipped, because `build_loader` turns off video files and video thumbnails.
+- **`--limit` and pinned posts:** a profile can pin up to 3 posts (`MAX_PINNED`), and they are listed first whatever their date. Reading 3 extra posts and sorting by date keeps old pinned posts from taking the N slots.
+- **Re-runs:** instaloader skips files that already exist, so an interrupted download picks up where it stopped.
+- **Terminal safety:** all output, including the caption previews instaloader prints, goes through `strip_control`, so a caption can't send escape codes to your terminal.
+
 ## Exit codes
 
 | Code | Meaning |
