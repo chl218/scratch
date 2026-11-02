@@ -34,7 +34,7 @@ def build_loader(
     """
     loader = instaloader.Instaloader(
         dirname_pattern=str(Path(output_dir) / "{target}"),
-        filename_pattern="{date_utc:%Y-%m-%d_%H-%M-%S}_{shortcode}",
+        filename_pattern="{target}_{date_utc:%Y-%m-%d_%H-%M-%S}_{shortcode}",
         download_videos=videos,
         download_video_thumbnails=videos,
         download_geotags=False,
@@ -161,7 +161,9 @@ def download_user(
     """Download a user's posts, newest first. Returns how many were saved.
 
     Video posts are skipped unless the loader was built with videos=True, and
-    --limit counts only the posts that are kept.
+    --limit counts only the posts that are kept. Pinned posts are downloaded like
+    any other, but --limit picks the newest posts by date, so old pinned posts
+    don't take up slots.
     """
     profile = instaloader.Profile.from_username(loader.context, username)
 
@@ -185,7 +187,8 @@ def download_user(
     if not include_videos:
         posts = (p for p in posts if not p.is_video)
     if limit is not None:
-        # Pinned posts come first regardless of date, so read a few extra and sort.
+        # Up to MAX_PINNED pinned posts come first regardless of date. Read that many
+        # extra posts, then keep the newest `limit` by date.
         candidates = list(islice(posts, limit + MAX_PINNED))
         posts = sorted(candidates, key=lambda p: p.date_utc, reverse=True)[:limit]
 

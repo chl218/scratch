@@ -4,11 +4,27 @@ A terminal tool that downloads an Instagram user's posts into a local folder, al
 
 ## Install
 
+**PowerShell / cmd:**
+
 ```powershell
 cd ig-scraper
 python -m venv .venv
 .venv\Scripts\pip install -e .[dev]
+.venv\Scripts\activate          # then run igdl directly
 ```
+
+**Git Bash** (use forward slashes, because bash treats `\` as an escape character):
+
+```bash
+cd ig-scraper
+python -m venv .venv
+source .venv/Scripts/activate   # then pip and igdl work directly
+pip install -e ".[dev]"
+```
+
+On macOS or Linux, use `.venv/bin/activate` instead of `.venv/Scripts/activate`.
+
+After activating, `igdl --help` should print the options. Run `deactivate` to leave the environment.
 
 ## Usage
 
@@ -35,11 +51,11 @@ igdl some_private_friend --sessionid  # paste your session cookie at a hidden pr
 | Video and reel posts | skipped (not counted toward `--limit`) | `.mp4` + cover image |
 | Video slides in a carousel | skipped | `.mp4` + cover image |
 
-`--limit N` gives the N most recent posts by date. Pinned posts are only included if they fall in that range.
+`--limit N` gives the N most recent posts by date. A profile can pin up to 3 posts, and Instagram always lists them first, so the tool reads 3 extra posts and keeps the N newest. Pinned posts are only included if they're among the N newest. Without `--limit`, everything is downloaded, pinned posts included.
 
 ### Output files
 
-Each post is saved as `YYYY-MM-DD_HH-MM-SS_<shortcode>` with these files:
+Each post is saved as `<username>_YYYY-MM-DD_HH-MM-SS_<shortcode>`, for example `natgeo_2026-11-01_23-53-04_DfN9Oosk9s2_1.jpg`, with these files:
 - `.jpg` (and `.mp4` with `--videos`): the media. Carousels get `_1`, `_2`, … suffixes.
 - `.txt`: the caption.
 - `.json`: the full post metadata.

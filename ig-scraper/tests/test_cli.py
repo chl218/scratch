@@ -39,6 +39,7 @@ def test_build_loader_paths(tmp_path):
     assert loader.dirname_pattern == str(tmp_path / "{target}")
     assert loader.download_videos is False
     assert loader.download_video_thumbnails is False  # carousel video slides skipped
+    assert loader.filename_pattern.startswith("{target}_")  # username prefix
     assert downloader.build_loader(tmp_path, videos=True).download_videos is True
     assert loader.save_metadata is False
     assert loader.post_metadata_txt_pattern == ""
@@ -137,3 +138,31 @@ def test_videos_flag_includes_video_posts(tmp_path, monkeypatch):
     loader, saved = _fake_feed(monkeypatch, tmp_path, _posts(), videos=True)
     assert downloader.download_user(loader, "u", limit=3, log=lambda m: None) == 3
     assert saved == ["i20", "v19", "i18"]
+
+
+
+def test_limit_includes_pinned_post_when_recent_enough(tmp_path, monkeypatch):
+    from datetime import datetime
+    from types import SimpleNamespace
+
+    def post(code, day, is_video=False):
+        return SimpleNamespace(shortcode=code, date_utc=datetime(2026, 1, day), is_video=is_video)
+
+    # Three pinned posts: two old, one newer than some regular posts.
+    feed = [post("pin_old", 1), post("pin_new", 18), post("pin_old2", 2)] + [
+        post(f"p{d}", d) for d in (20, 19, 17, 16, 15)
+    ]
+    loader, saved = _fake_feed(monkeypatch, tmp_path, feed, videos=False)
+    assert downloader.download_user(loader, "u", limit=4, log=lambda m: None) == 4
+    assert saved == ["p20", "p19", "pin_new", "p17"]
+
+
+def test_no_limit_downloads_pinned_posts_too(tmp_path, monkeypatch):
+    from datetime import datetime
+    from types import SimpleNamespace
+
+    feed = [SimpleNamespace(shortcode=c, date_utc=datetime(2026, 1, d), is_video=False)
+            for c, d in (("pin", 1), ("p3", 3), ("p2", 2))]
+    loader, saved = _fake_feed(monkeypatch, tmp_path, feed, videos=False)
+    assert downloader.download_user(loader, "u", log=lambda m: None) == 3
+    assert sorted(saved) == ["p2", "p3", "pin"]
