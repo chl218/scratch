@@ -3,9 +3,8 @@
 Flow of a run (see main()):
   1. Parse and validate the arguments.
   2. Build an instaloader instance configured for our file layout.
-  3. Log in with the chosen method, if any (--cookies, --sessionid or --login).
-  4. Download the user's posts.
-  5. Turn any failure into a short message and an exit code.
+  3. Download the user's posts (public profiles only; there is no login).
+  4. Turn any failure into a short message and an exit code.
 
 The `igdl` console command (defined in pyproject.toml) calls main().
 """
@@ -13,15 +12,11 @@ The `igdl` console command (defined in pyproject.toml) calls main().
 from __future__ import annotations
 
 import argparse
-import getpass
-import os
 import sys
 from pathlib import Path
 
 from instaloader.exceptions import (
-    BadCredentialsException,
     ConnectionException,
-    LoginException,
     LoginRequiredException,
     PrivateProfileNotFollowedException,
     ProfileNotExistsException,
@@ -31,19 +26,11 @@ from instaloader.exceptions import (
 from . import __version__
 from .security import is_valid_username, strip_control
 
-# Browsers that browser_cookie3 can read cookies from (values for --cookies).
-BROWSERS = (
-    "firefox", "chrome", "edge", "brave", "chromium",
-    "opera", "opera_gx", "vivaldi", "librewolf", "safari",
-)
-# Environment variable that --sessionid reads before falling back to a prompt.
-SESSIONID_ENV = "IGDL_SESSIONID"
-
 # Exit codes, documented in the README so scripts can react to them.
+# (3 was "login failed" when igdl had login options; it's no longer used.)
 EXIT_OK = 0
 EXIT_NOT_FOUND = 1      # profile doesn't exist
-EXIT_PRIVATE = 2        # private profile, or Instagram requires login
-EXIT_LOGIN = 3          # bad password, or missing/expired session cookie
+EXIT_PRIVATE = 2        # private profile
 EXIT_RATE_LIMIT = 4     # rate-limited, blocked, or another network error
 EXIT_INTERRUPTED = 130  # Ctrl+C (the usual shell convention: 128 + SIGINT)
 
@@ -60,7 +47,7 @@ def build_parser() -> argparse.ArgumentParser:
     """Define every command-line option. Help texts show up in `igdl --help`."""
     p = argparse.ArgumentParser(
         prog="igdl",
-        description="Download all posts from an Instagram user to a directory.",
+        description="Download all posts from a public Instagram profile to a directory.",
     )
     p.add_argument("username", help="Instagram username to download (without @)")
     p.add_argument(
@@ -68,31 +55,17 @@ def build_parser() -> argparse.ArgumentParser:
         help="base directory; posts go in OUTPUT/<username>/ (default: ./downloads)",
     )
 
-    # Login methods. Only one can be used per run, so argparse rejects combinations.
-    auth = p.add_mutually_exclusive_group()
-    auth.add_argument(
-        "--cookies", metavar="BROWSER", type=str.lower, choices=BROWSERS,
-        help="reuse your Instagram login from this browser (recommended; e.g. firefox)",
-    )
-    # A flag, not a value option: the secret is never typed on the command line,
-    # where it would end up in shell history and process lists.
-    auth.add_argument(
-        "--sessionid", action="store_true",
-        help=f"use a sessionid cookie, read from ${SESSIONID_ENV} or a hidden prompt",
-    )
-    auth.add_argument("--login", metavar="IG_USER", help="log in with a password (fallback)")
-    p.add_argument(
-        "--cookie-file", metavar="PATH",
-        help="path to the browser's cookie database, if it isn't in the default profile",
-    )
-
-    # What to download.
+    # What to download. Everything extra is off by default: just the images.
     p.add_argument("--limit", type=positive_int, help="only download the newest N posts")
     p.add_argument(
         "--videos", action="store_true",
         help="also download video posts and videos inside carousels (default: images only)",
     )
-    p.add_argument("--no-metadata", action="store_true", help="skip caption .txt and .json files")
+    p.add_argument(
+        "--caption", action="store_true",
+        help="save each caption as .txt and write its #hashtags into the images' Tags",
+    )
+    p.add_argument("--metadata", action="store_true", help="save each post's full data as .json")
     p.add_argument("-q", "--quiet", action="store_true", help="less output")
     p.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     return p
@@ -105,8 +78,6 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     """
     parser = build_parser()
     args = parser.parse_args(argv)
-    if args.cookie_file and not args.cookies:
-        parser.error("--cookie-file requires --cookies")
     # Accept "@name" as well as "name".
     args.username = args.username.strip().lstrip("@")
     # Reject anything that isn't a valid Instagram username, e.g. "../evil",
@@ -122,16 +93,11 @@ def describe_error(e: BaseException, username: str) -> tuple[int, str] | None:
     Shared by the terminal (main below) and the GUI (main-program.py), so both
     explain failures the same way.
     """
-    # Order matters: TooManyRequestsException is a kind of ConnectionException,
-    # and BadCredentialsException is a kind of LoginException.
+    # Order matters: TooManyRequestsException is a kind of ConnectionException.
     if isinstance(e, ProfileNotExistsException):
         return EXIT_NOT_FOUND, f"profile '{username}' does not exist."
     if isinstance(e, (PrivateProfileNotFollowedException, LoginRequiredException)):
-        return EXIT_PRIVATE, (
-            f"{e}\nhint: log in (browser login or session ID) with an account that can see this profile."
-        )
-    if isinstance(e, (BadCredentialsException, LoginException)):
-        return EXIT_LOGIN, f"login failed: {e}"
+        return EXIT_PRIVATE, f"profile '{username}' is private, so its posts can't be downloaded."
     if isinstance(e, TooManyRequestsException):
         return EXIT_RATE_LIMIT, (
             "Instagram is rate-limiting requests. Wait a while and re-run; "
@@ -142,7 +108,7 @@ def describe_error(e: BaseException, username: str) -> tuple[int, str] | None:
         # as generic connection errors, so look for the status code in the message.
         msg = str(e)
         if any(code in msg for code in ("401", "429")):
-            return EXIT_RATE_LIMIT, "Instagram blocked the request (401/429). Wait and retry, or log in."
+            return EXIT_RATE_LIMIT, "Instagram blocked the request (401/429). Wait a while and retry."
         return EXIT_RATE_LIMIT, f"connection problem: {msg}"
     return None
 
@@ -155,36 +121,29 @@ def _err(msg: str) -> None:
 
 def main(argv: list[str] | None = None) -> int:
     """Run igdl and return an exit code (see the EXIT_* constants)."""
+    # Captions and hashtags can be in any language. If the terminal's encoding
+    # can't show a character (e.g. Korean on a cp1252 console), print "?" instead
+    # of crashing mid-download. The files themselves always keep the real text.
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(errors="replace")
+        except (AttributeError, ValueError):  # not a normal text stream (e.g. in tests)
+            pass
     args = parse_args(argv)
     # Imported after parsing so bad arguments fail before any setup work.
     from . import downloader
 
+    # Rate-limit pauses can last minutes. Without -q instaloader announces them itself;
+    # -q hides that, so announce them on stderr ourselves (never hide a long wait).
+    on_pause = (lambda secs: print(downloader.format_pause(secs), file=sys.stderr)) if args.quiet else None
     loader = downloader.build_loader(
-        args.output, videos=args.videos, metadata=not args.no_metadata, quiet=args.quiet
+        args.output, videos=args.videos, caption=args.caption, metadata=args.metadata,
+        quiet=args.quiet, on_pause=on_pause,
     )
     # Progress output. Silent with -q; otherwise sanitized like errors are.
     log = (lambda _m: None) if args.quiet else (lambda m: print(strip_control(m)))
-    count = 0
     try:
-        # Step 1: log in, if asked. With no login option the session stays
-        # anonymous, which works for public profiles but Instagram may limit results.
-        if args.cookies:
-            # Reuse the login from the browser. Nothing is written to disk.
-            cookies = downloader.read_browser_cookies(args.cookies, args.cookie_file)
-            who = downloader.login_with_cookies(loader, cookies)
-            log(f"Using {args.cookies} session for @{who}")
-        elif args.sessionid:
-            # pop() so the secret isn't inherited by any child process.
-            sid = os.environ.pop(SESSIONID_ENV, "") or getpass.getpass("Paste sessionid (hidden): ")
-            who = downloader.login_with_sessionid(loader, sid)
-            log(f"Using session for @{who}")
-        elif args.login:
-            # Password login; reuses or saves a session file on disk.
-            downloader.login(loader, args.login)
-
-        # Step 2: download the posts.
         count = downloader.download_user(loader, args.username, args.limit, log=log)
-
     except KeyboardInterrupt:
         print("\nInterrupted. Files saved so far are kept; re-run to continue.", file=sys.stderr)
         return EXIT_INTERRUPTED

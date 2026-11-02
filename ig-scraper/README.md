@@ -1,6 +1,6 @@
 # igdl: Instagram post downloader
 
-A terminal tool that downloads an Instagram user's posts into a local folder, along with each post's caption and metadata. By default it saves **images only**. Add `--videos` to include videos. It is built on [instaloader](https://instaloader.github.io/).
+A terminal tool and desktop window that download a **public** Instagram profile's posts into a local folder. By default it saves **images only**. Videos, captions and metadata are each opt-in. With captions on, every `#hashtag` in a post's caption is also written into its images' **Tags**, which Windows shows under Properties → Details. It is built on [instaloader](https://instaloader.github.io/).
 
 ## Install
 
@@ -45,20 +45,17 @@ The window has the same features as the `igdl` command:
 | Output folder (prefilled with `downloads` under the current folder) | `-o DIR` |
 | ☐ Only the newest _N_ posts | `--limit N` |
 | ☐ Include videos | `--videos` |
-| ☑ Save captions and metadata (on by default) | unticked = `--no-metadata` |
-| ☐ Use my browser's Instagram login + browser + optional cookie file | `--cookies BROWSER [--cookie-file PATH]` |
-| ☐ Use a session ID cookie (hidden field) | `--sessionid` |
-| ☐ Log in with username and password | `--login IG_USER` |
+| ☐ Save caption (.txt) and write its #hashtags to the images' Tags | `--caption` |
+| ☐ Save metadata (.json) | `--metadata` |
 
-You can tick only one login option at a time. Progress appears in the log box. **Stop** finishes the post that's downloading and then stops, and **Open folder** shows the downloaded files.
+All checkboxes start unticked. Progress appears in the log box. **Stop** finishes the post that's downloading and then stops, and **Open folder** shows the downloaded files.
 
 The window uses only Python's built-in `tkinter`, so it needs nothing beyond igdl's own dependencies. If those aren't installed, it shows a message with the install command.
 
 ## Usage
 
 ```powershell
-igdl USERNAME [-o DIR] [--cookies BROWSER | --sessionid | --login IG_USER]
-              [--limit N] [--videos] [--no-metadata] [-q]
+igdl USERNAME [-o DIR] [--limit N] [--videos] [--caption] [--metadata] [-q]
 ```
 
 Examples:
@@ -66,9 +63,8 @@ Examples:
 ```powershell
 igdl natgeo --limit 10                # newest 10 image posts -> downloads/natgeo/
 igdl natgeo --limit 10 --videos       # newest 10 posts, videos included
-igdl natgeo -o D:\ig                  # all image posts -> D:\ig\natgeo\
-igdl natgeo --cookies firefox         # use your Firefox login (recommended)
-igdl some_private_friend --sessionid  # paste your session cookie at a hidden prompt
+igdl natgeo --caption                 # all image posts + caption .txt + hashtag Tags
+igdl natgeo -o D:\ig --metadata       # all image posts + .json data -> D:\ig\natgeo\
 ```
 
 ### Images vs. videos
@@ -81,112 +77,75 @@ igdl some_private_friend --sessionid  # paste your session cookie at a hidden pr
 
 `--limit N` gives the N most recent posts by date. A profile can pin up to 3 posts, and Instagram always lists them first, so the tool reads 3 extra posts and keeps the N newest. Pinned posts are only included if they're among the N newest. Without `--limit`, everything is downloaded, pinned posts included.
 
+### Captions and hashtag Tags (`--caption`)
+
+With `--caption` (or the GUI checkbox), each post gets:
+
+1. **A `.txt` file** with the full caption.
+2. **Tags on every image** of the post: each word in the caption that starts with `#`.
+
+| Caption | Tags written |
+|---------|--------------|
+| `Wow this #portrait is awesome.` | `#portrait` |
+| `#film #Portrait, shot on #cinestill800t #film` | `#film; #Portrait; #cinestill800t` |
+| `부산 #필름스냅` | `#필름스냅` |
+
+- A tag is `#` followed by letters, digits or `_`, in any language. It ends at a space or punctuation, so `#portrait.` becomes `#portrait`.
+- Duplicates are dropped, ignoring case. The first spelling is kept.
+- **Where to see them:** in Windows Explorer, right-click an image → **Properties** → **Details** → **Tags**, or add the *Tags* column in Details view. You can also search with `tags:#portrait`. Other photo apps that read EXIF keywords (`XPKeywords`) show them too.
+- The image itself isn't re-encoded, so quality is unchanged, and the file keeps the post's date.
+- Only `.jpg` files are tagged. Videos have no tags.
+- Re-running with `--caption` also tags images you downloaded earlier without it.
+
 ### Output files
 
-Each post is saved as `<username>_YYYY-MM-DD_HH-MM-SS_<shortcode>`, for example `natgeo_2026-11-01_23-53-04_DfN9Oosk9s2_1.jpg`, with these files:
-- `.jpg` (and `.mp4` with `--videos`): the media. Carousels get `_1`, `_2`, … suffixes.
-- `.txt`: the caption.
-- `.json`: the full post metadata.
+Each post is saved as `<username>_YYYY-MM-DD_HH-MM-SS_<shortcode>`, for example `natgeo_2026-11-01_23-53-04_DfN9Oosk9s2_1.jpg`:
+
+| File | When |
+|------|------|
+| `.jpg` | always. Carousels get `_1`, `_2`, … suffixes |
+| `.mp4` | with `--videos` |
+| `.txt` (caption) | with `--caption` |
+| `.json` (full post data) | with `--metadata` |
 
 Re-running the command skips files that already exist, so an interrupted download can be resumed.
 
-## Login
-
-Without login, Instagram often returns only a few posts or blocks requests. There are three ways to log in. The first two never give the tool your password, and they save nothing to disk.
-
-| Option | How it works | Password typed into igdl? |
-|--------|--------------|---------------------------|
-| `--cookies BROWSER` | Reads your existing Instagram login from a browser | No |
-| `--sessionid` | Uses a session cookie you copy from the browser | No |
-| `--login IG_USER` | Asks for your password and saves a session file | Yes (fallback only) |
-
-When you log out of Instagram in the browser, the session ends, and with it the tool's access.
-
-### Option 1: `--cookies` (recommended)
-
-1. Open **Firefox** and log in at https://www.instagram.com. Finish any 2FA step there.
-2. Run:
-   ```powershell
-   igdl natgeo --cookies firefox
-   ```
-   The tool prints `Using firefox session for @your_account` and starts downloading.
-
-Supported browsers are `firefox`, `chrome`, `edge`, `brave`, `chromium`, `opera`, `opera_gx`, `vivaldi`, `librewolf` and `safari`.
-
-> **Chrome, Edge and Brave on Windows:** newer versions encrypt their cookies so that other programs can't read them. If `--cookies chrome` fails or says "no Instagram session found" even though you're logged in, use Firefox or Option 2.
->
-> If your browser uses a non-default profile, point to its cookie database with `--cookie-file`. In Firefox, the profile folder is listed at `about:profiles`, and the file is `cookies.sqlite` in that folder.
-
-### Option 2: `--sessionid` (copy the cookie by hand)
-
-This works with any browser.
-
-**Get the session cookie:**
-
-1. Log in at https://www.instagram.com in your browser.
-2. Press **F12** to open Developer Tools.
-3. Open the storage panel:
-   - **Chrome / Edge / Brave:** **Application** tab → **Storage** → **Cookies** → `https://www.instagram.com`
-   - **Firefox:** **Storage** tab → **Cookies** → `https://www.instagram.com`
-4. Find the row named **`sessionid`** and double-click its **Value** cell to select it. Copy it (Ctrl+C). It looks like `1234567890%3AAbCdEf...`.
-5. Close Developer Tools.
-
-**Use it.** Either paste it at the hidden prompt, where nothing is shown or saved:
-
-```powershell
-igdl natgeo --sessionid
-Paste sessionid (hidden):
-```
-
-or set it for the current terminal session only:
-
-```powershell
-$env:IGDL_SESSIONID = "<paste here>"
-igdl natgeo --sessionid
-Remove-Item Env:IGDL_SESSIONID     # clear it when done
-```
-
-> **Treat `sessionid` like a password.** Anyone who has it can use your Instagram account until you log out. Don't paste it into files, chats or commit messages. If it leaks, log out of Instagram in the browser and the cookie stops working.
-
-### Option 3: `--login` (fallback)
-
-`--login IG_USER` asks for the password (and a 2FA code if needed). It saves a session file in `%LOCALAPPDATA%\Instaloader\` so later runs don't ask again. That file is **not encrypted**, so prefer Options 1 or 2.
-
 ## Architecture
 
-`igdl` is a thin layer over [instaloader](https://instaloader.github.io/). It has three modules:
+`igdl` is a thin layer over [instaloader](https://instaloader.github.io/). It has four modules, plus the GUI:
 
 | Module | Job |
 |--------|-----|
-| [`cli.py`](src/igdl/cli.py) | Parses arguments, validates the username, picks a login method, and turns errors into messages and exit codes. |
-| [`downloader.py`](src/igdl/downloader.py) | Configures instaloader, handles the three login methods, and runs the download loop (images-only filter, `--limit`). |
-| [`security.py`](src/igdl/security.py) | Small pure helpers: domain checks, `sessionid` cleanup, a cookie jar scoped to `*.instagram.com`, and stripping terminal control characters. |
+| [`cli.py`](src/igdl/cli.py) | Parses arguments, validates the username, and turns errors into messages and exit codes. |
+| [`downloader.py`](src/igdl/downloader.py) | Configures instaloader, reports rate-limit pauses, and runs the download loop (images-only filter, `--limit`, tagging). |
+| [`tags.py`](src/igdl/tags.py) | Finds `#hashtags` in a caption and writes them into a JPEG's EXIF Tags with `piexif`. |
+| [`security.py`](src/igdl/security.py) | Small pure helpers: username check, and stripping terminal control characters. |
+| [`main-program.py`](main-program.py) | The tkinter window. Runs `downloader` on a background thread. |
 
 ### Components
 
 ```mermaid
 flowchart LR
-    user(["Terminal<br/>igdl USERNAME ..."])
+    user(["Terminal: igdl USERNAME ...<br/>or the window: main-program.py"])
 
     subgraph igdl["igdl package"]
         cli["cli.py<br/>parse args · validate username<br/>map errors to exit codes"]
-        dl["downloader.py<br/>build_loader · login methods<br/>download_user"]
-        sec["security.py<br/>domain check · sessionid check<br/>scoped cookies · strip_control"]
+        dl["downloader.py<br/>build_loader · pause notices<br/>download_user"]
+        tags["tags.py<br/>extract_hashtags · write_tags"]
+        sec["security.py<br/>username check · strip_control"]
     end
 
     subgraph libs["Libraries"]
         il["instaloader<br/>Instagram API client"]
-        bc3["browser_cookie3<br/>reads browser cookie DB"]
+        px["piexif<br/>EXIF writer"]
     end
 
     subgraph local["This computer"]
-        browser[("Browser cookie store<br/>Firefox / Chrome / Edge ...")]
         out[("downloads/&lt;user&gt;/<br/>.jpg · .mp4 · .txt · .json")]
-        sess[("%LOCALAPPDATA%\Instaloader<br/>session file (--login only)")]
     end
 
-    subgraph ig["Instagram"]
-        api["www / i.instagram.com<br/>profile + post API"]
+    subgraph ig["Instagram (public data, no login)"]
+        api["www.instagram.com<br/>profile + post API"]
         cdn["CDN<br/>image + video files"]
     end
 
@@ -194,42 +153,14 @@ flowchart LR
     cli --> dl
     cli -.->|uses| sec
     dl -.->|uses| sec
-    dl -->|"--cookies"| bc3
-    bc3 --> browser
     dl --> il
-    il -->|"session cookies<br/>HTTPS, *.instagram.com only"| api
-    il -->|"no cookies"| cdn
+    dl -->|"--caption"| tags
+    tags --> px
+    px -->|"Tags into .jpg"| out
+    il --> api
+    il --> cdn
     il --> out
-    il <-.->|"--login"| sess
 ```
-
-### Login paths
-
-All three paths end in the same place: a session whose cookies are only sent to `*.instagram.com` over HTTPS.
-
-```mermaid
-flowchart TD
-    start{"Login option?"}
-    start -->|none| anon["Anonymous session<br/>(Instagram may limit results)"]
-    start -->|"--cookies BROWSER"| read["read_browser_cookies<br/>keep exact instagram.com domains only"]
-    start -->|"--sessionid"| sid["$IGDL_SESSIONID or hidden prompt<br/>normalize_sessionid (format check)"]
-    start -->|"--login IG_USER"| file{"Saved session file?"}
-
-    file -->|yes| load["load session file"]
-    file -->|no| pw["password prompt (+ 2FA)<br/>save session file"]
-    load -->|expired| pw
-
-    read --> lwc["login_with_cookies"]
-    sid --> lwc
-    lwc --> scope["scope_session_cookies<br/>.instagram.com · HTTPS only"]
-    load --> scope
-    pw --> scope
-    scope --> check["test_login → logged-in username"]
-    check --> ready(["Ready to download"])
-    anon --> ready
-```
-
-`--cookies` and `--sessionid` keep the session in memory only. `--login` is the only path that writes a secret to disk.
 
 ### Download pipeline
 
@@ -241,20 +172,25 @@ flowchart LR
     lim{"--limit N?"}
     take["read N + 3 posts<br/>sort by date<br/>keep newest N"]
     post["download_post<br/>per post"]
-    files[("&lt;user&gt;_DATE_CODE_k.jpg<br/>.mp4 with --videos<br/>.txt + .json unless --no-metadata")]
+    cap{"--caption?"}
+    tag["write caption #hashtags<br/>into each .jpg's Tags"]
+    files[("&lt;user&gt;_DATE_CODE_k.jpg<br/>+ .mp4 / .txt / .json<br/>when enabled")]
 
     feed --> vid
     vid -->|no| drop --> lim
     vid -->|yes| lim
     lim -->|yes| take --> post
     lim -->|"no: all posts"| post
-    post --> files
+    post --> cap
+    cap -->|yes| tag --> files
+    cap -->|no| files
 ```
 
 - **Images only (default):** video posts are dropped before `--limit` counts posts. Video slides inside carousels are also skipped, because `build_loader` turns off video files and video thumbnails.
 - **`--limit` and pinned posts:** a profile can pin up to 3 posts (`MAX_PINNED`), and they are listed first whatever their date. Reading 3 extra posts and sorting by date keeps old pinned posts from taking the N slots.
+- **Tags:** stored in the EXIF `XPKeywords` field, which is where Windows itself saves Tags.
 - **Re-runs:** instaloader skips files that already exist, so an interrupted download picks up where it stopped.
-- **Terminal safety:** all output, including the caption previews instaloader prints, goes through `strip_control`, so a caption can't send escape codes to your terminal.
+- **Terminal safety:** all output, including the caption previews instaloader prints, goes through `strip_control`, so a caption can't send escape codes to your terminal. Characters your terminal can't display (e.g. Korean on an older Windows console) print as `?`. The files keep the real text.
 
 ## Exit codes
 
@@ -262,13 +198,14 @@ flowchart LR
 |------|---------|
 | 0 | success |
 | 1 | profile not found |
-| 2 | private profile, or login required |
-| 3 | login failed (bad password, or missing/expired session cookie) |
+| 2 | private profile (can't be downloaded without login) |
 | 4 | rate-limited or blocked by Instagram |
 | 130 | interrupted (Ctrl+C) |
 
+Code 3 was "login failed" in earlier versions and is no longer used.
+
 ## Caveats
 
-- Scraping goes against Instagram's Terms of Service. Use this tool for your own account or for accounts you have permission to archive.
-- Logging in with your main account can get it flagged. Consider a secondary account.
-- Without login, Instagram often returns only a few posts or answers with 401/429 errors. Wait and retry, or log in with `--cookies`.
+- **Public profiles only.** There is no login, so private profiles can't be downloaded. Instagram may also show fewer posts, or block requests (401/429), for logged-out visitors. If that happens, wait a while and re-run.
+- Scraping goes against Instagram's Terms of Service. Use this tool for profiles you have permission to archive.
+- **Rate-limit pauses:** instaloader slows down on its own to stay under Instagram's limits, and those pauses can last several minutes. You'll see `Instagram rate limit: pausing 6 min (until 14:05)`, both in the terminal (even with `-q`) and in the GUI's log box and status line. The download then continues without any action from you. In the GUI, **Stop** also works during a pause.

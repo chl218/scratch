@@ -9,9 +9,9 @@ def test_defaults():
     args = cli.parse_args(["someuser"])
     assert args.username == "someuser"
     assert args.output == Path("downloads")
-    assert args.login is None
     assert args.limit is None
-    assert not args.videos and not args.no_metadata and not args.quiet
+    # Only images by default: no videos, no caption, no metadata.
+    assert not args.videos and not args.caption and not args.metadata and not args.quiet
 
 
 def test_strips_at_sign():
@@ -20,12 +20,18 @@ def test_strips_at_sign():
 
 def test_all_flags():
     args = cli.parse_args(
-        ["u", "-o", "out", "--login", "me", "--limit", "5", "--videos", "--no-metadata", "-q"]
+        ["u", "-o", "out", "--limit", "5", "--videos", "--caption", "--metadata", "-q"]
     )
     assert args.output == Path("out")
-    assert args.login == "me"
     assert args.limit == 5
-    assert args.videos and args.no_metadata and args.quiet
+    assert args.videos and args.caption and args.metadata and args.quiet
+
+
+@pytest.mark.parametrize("removed", [["--login", "me"], ["--cookies", "firefox"], ["--sessionid"],
+                                     ["--no-metadata"]])
+def test_removed_options_are_rejected(removed):
+    with pytest.raises(SystemExit):
+        cli.parse_args(["u", *removed])
 
 
 @pytest.mark.parametrize("bad", ["0", "-3", "abc"])
@@ -35,7 +41,7 @@ def test_limit_must_be_positive(bad):
 
 
 def test_build_loader_paths(tmp_path):
-    loader = downloader.build_loader(tmp_path, metadata=False)
+    loader = downloader.build_loader(tmp_path)  # defaults: images only, no extras
     assert loader.dirname_pattern == str(tmp_path / "{target}")
     assert loader.download_videos is False
     assert loader.download_video_thumbnails is False  # carousel video slides skipped
@@ -43,42 +49,16 @@ def test_build_loader_paths(tmp_path):
     assert downloader.build_loader(tmp_path, videos=True).download_videos is True
     assert loader.save_metadata is False
     assert loader.post_metadata_txt_pattern == ""
+    both = downloader.build_loader(tmp_path, caption=True, metadata=True)
+    assert both.post_metadata_txt_pattern == "{caption}" and both.save_metadata is True
+    only_caption = downloader.build_loader(tmp_path, caption=True)
+    assert only_caption.post_metadata_txt_pattern == "{caption}" and only_caption.save_metadata is False
 
 
-def test_cookies_flag():
-    args = cli.parse_args(["u", "--cookies", "Firefox"])
-    assert args.cookies == "firefox"
 
 
-def test_unknown_browser_rejected():
-    with pytest.raises(SystemExit):
-        cli.parse_args(["u", "--cookies", "netscape"])
 
 
-def test_login_methods_are_exclusive():
-    with pytest.raises(SystemExit):
-        cli.parse_args(["u", "--cookies", "firefox", "--login", "me"])
-    with pytest.raises(SystemExit):
-        cli.parse_args(["u", "--sessionid", "--login", "me"])
-
-
-def test_cookie_file_needs_cookies():
-    with pytest.raises(SystemExit):
-        cli.parse_args(["u", "--cookie-file", "x.sqlite"])
-
-
-def test_login_with_cookies_requires_sessionid(tmp_path):
-    from instaloader.exceptions import LoginException
-
-    loader = downloader.build_loader(tmp_path)
-    with pytest.raises(LoginException):
-        downloader.login_with_cookies(loader, {"csrftoken": "abc"})
-
-
-def test_main_rejects_bad_sessionid(tmp_path, monkeypatch):
-    monkeypatch.setenv(cli.SESSIONID_ENV, "not-a-real-session")
-    monkeypatch.setattr(downloader.instaloader.Instaloader, "test_login", lambda self: None)
-    assert cli.main(["u", "--sessionid", "-o", str(tmp_path), "-q"]) == cli.EXIT_LOGIN
 
 
 def test_limit_skips_old_pinned_posts(tmp_path, monkeypatch):
@@ -181,8 +161,6 @@ def test_should_stop_ends_run_before_next_post(tmp_path, monkeypatch):
     ("ProfileNotExistsException", cli.EXIT_NOT_FOUND),
     ("PrivateProfileNotFollowedException", cli.EXIT_PRIVATE),
     ("LoginRequiredException", cli.EXIT_PRIVATE),
-    ("BadCredentialsException", cli.EXIT_LOGIN),
-    ("LoginException", cli.EXIT_LOGIN),
     ("TooManyRequestsException", cli.EXIT_RATE_LIMIT),  # subclass of ConnectionException
     ("ConnectionException", cli.EXIT_RATE_LIMIT),
 ])
@@ -197,19 +175,86 @@ def test_describe_error_ignores_unexpected_errors():
     assert cli.describe_error(ValueError("bug"), "someone") is None
 
 
-def test_password_login_uses_injected_prompts(tmp_path, monkeypatch):
-    from instaloader.exceptions import TwoFactorAuthRequiredException
 
-    loader = downloader.build_loader(tmp_path, quiet=True)
-    monkeypatch.setattr(type(loader), "load_session_from_file", lambda self, u: (_ for _ in ()).throw(FileNotFoundError()))
-    calls = []
+def test_format_pause():
+    from datetime import datetime
 
-    def fake_login(self, user, pw):
-        calls.append(("login", user, pw))
-        raise TwoFactorAuthRequiredException("2fa")
+    now = datetime(2026, 11, 2, 14, 0)
+    assert downloader.format_pause(42, now) == (
+        "Instagram rate limit: pausing 42 s (until 14:00). The download continues on its own."
+    )
+    assert "pausing 11 min (until 14:11)" in downloader.format_pause(666, now)
 
-    monkeypatch.setattr(type(loader), "login", fake_login)
-    monkeypatch.setattr(type(loader), "two_factor_login", lambda self, code: calls.append(("2fa", code)))
-    monkeypatch.setattr(type(loader), "save_session_to_file", lambda self: calls.append(("saved",)))
-    downloader.login(loader, "me", ask_password=lambda u: "pw!", ask_2fa=lambda: " 123456 ", log=lambda m: None)
-    assert calls == [("login", "me", "pw!"), ("2fa", "123456"), ("saved",)]
+
+def _rate_controller(tmp_path, monkeypatch, **hooks):
+    import instaloader.instaloadercontext as ctx_mod
+
+    slept = []
+    monkeypatch.setattr(ctx_mod.time, "sleep", slept.append)  # shared time module
+    loader = downloader.build_loader(tmp_path, quiet=True, **hooks)
+    return loader.context._rate_controller, slept
+
+
+def test_rate_limit_pause_is_announced_even_when_quiet(tmp_path, monkeypatch):
+    notices = []
+    rc, slept = _rate_controller(tmp_path, monkeypatch, on_pause=notices.append)
+    rc.sleep(5)       # short pause: not announced
+    rc.sleep(300)     # long pause: announced
+    assert notices == [300]
+    assert slept == [5, 300]
+
+
+def test_stop_ends_rate_limit_pause(tmp_path, monkeypatch):
+    rc, slept = _rate_controller(tmp_path, monkeypatch, should_stop=lambda: True)
+    with pytest.raises(downloader.DownloadStopped):
+        rc.sleep(600)
+    assert slept == []  # didn't wait out the 10 minutes
+
+
+def test_default_loader_keeps_instaloaders_rate_controller(tmp_path):
+    import instaloader
+
+    rc = downloader.build_loader(tmp_path).context._rate_controller
+    assert type(rc) is instaloader.RateController
+
+
+def test_stop_during_pause_inside_download_returns_count(tmp_path, monkeypatch):
+    loader, saved = _fake_feed(monkeypatch, tmp_path, _posts(), videos=True)
+
+    def download_post(post, target):
+        saved.append(post.shortcode)
+        if len(saved) == 2:
+            raise downloader.DownloadStopped()  # as if Stop hit during a pause
+
+    monkeypatch.setattr(loader, "download_post", download_post)
+    logs = []
+    assert downloader.download_user(loader, "u", log=logs.append) == 2
+    assert logs[-1] == "Stopped."
+
+
+def test_quiet_cli_prints_pause_notice(tmp_path, monkeypatch, capsys):
+    captured = {}
+    real_build = downloader.build_loader
+
+    def spy_build(*a, **kw):
+        captured["on_pause"] = kw.get("on_pause")
+        return real_build(*a, **kw)
+
+    monkeypatch.setattr(downloader, "build_loader", spy_build)
+    monkeypatch.setattr(downloader, "download_user", lambda *a, **k: 0)
+    assert cli.main(["u", "-q", "-o", str(tmp_path)]) == cli.EXIT_OK
+    captured["on_pause"](120)
+    assert "Instagram rate limit: pausing 2 min" in capsys.readouterr().err
+
+
+def test_unprintable_characters_dont_crash_output(tmp_path, monkeypatch):
+    import io
+    import sys
+
+    # A console that can only show Western European text, like Windows' cp1252.
+    console = io.TextIOWrapper(io.BytesIO(), encoding="cp1252")
+    monkeypatch.setattr(sys, "stdout", console)
+    monkeypatch.setattr(downloader, "download_user", lambda loader, u, limit, log: log("tags: #필름스냅") or 1)
+    assert cli.main(["u", "-o", str(tmp_path)]) == cli.EXIT_OK
+    console.flush()
+    assert b"tags: #????" in console.buffer.getvalue()

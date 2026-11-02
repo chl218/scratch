@@ -7,7 +7,7 @@ name = "igdl"
 version = "0.1.0"
 description = "Download all posts from an Instagram user to a local directory"
 requires-python = ">=3.10"
-dependencies = ["instaloader>=4.14", "browser_cookie3>=0.19"]
+dependencies = ["instaloader>=4.14", "piexif>=1.1.3"]
 
 [project.optional-dependencies]
 dev = ["pytest"]

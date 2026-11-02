@@ -1,9 +1,10 @@
-"""igdl - download an Instagram user's posts.
+"""igdl - download a public Instagram profile's posts.
 
 Modules:
-  cli.py         command-line parsing, login choice, error -> exit code mapping
-  downloader.py  instaloader setup, login methods, the download loop
-  security.py    pure helpers for cookies, secrets and untrusted text
+  cli.py         command-line parsing, error -> exit code mapping
+  downloader.py  instaloader setup, rate-limit pauses, the download loop
+  tags.py        caption #hashtags -> the images' Tags (EXIF XPKeywords)
+  security.py    pure helpers for untrusted input and text
 
 See README.md for usage and the architecture diagrams.
 """
