@@ -26,6 +26,34 @@ On macOS or Linux, use `.venv/bin/activate` instead of `.venv/Scripts/activate`.
 
 After activating, `igdl --help` should print the options. Run `deactivate` to leave the environment.
 
+## Desktop window (GUI)
+
+Prefer clicking to typing? With the virtual environment activated (see Install), run this from the `ig-scraper` folder:
+
+```powershell
+python main-program.py      # Windows
+python3 main-program.py     # macOS / Linux
+```
+
+> **Windows:** use `python`, not `python3`. On Windows, `python3` usually opens the Microsoft Store instead of running Python.
+
+The window has the same features as the `igdl` command:
+
+| In the window | Same as |
+|---------------|---------|
+| Instagram username | `USERNAME` |
+| Output folder (prefilled with `downloads` under the current folder) | `-o DIR` |
+| ☐ Only the newest _N_ posts | `--limit N` |
+| ☐ Include videos | `--videos` |
+| ☑ Save captions and metadata (on by default) | unticked = `--no-metadata` |
+| ☐ Use my browser's Instagram login + browser + optional cookie file | `--cookies BROWSER [--cookie-file PATH]` |
+| ☐ Use a session ID cookie (hidden field) | `--sessionid` |
+| ☐ Log in with username and password | `--login IG_USER` |
+
+You can tick only one login option at a time. Progress appears in the log box. **Stop** finishes the post that's downloading and then stops, and **Open folder** shows the downloaded files.
+
+The window uses only Python's built-in `tkinter`, so it needs nothing beyond igdl's own dependencies. If those aren't installed, it shows a message with the install command.
+
 ## Usage
 
 ```powershell

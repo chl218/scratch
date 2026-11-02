@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: #fafaf9;
+  color: #1c1917;
+}
+
+/* Shared form and layout styles */
+@utility input {
+  @apply w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm outline-none focus:border-stone-500 focus:ring-2 focus:ring-stone-200;
+}
+@utility label {
+  @apply mb-1 block text-sm font-medium text-stone-700;
+}
+@utility btn {
+  @apply inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary {
+  @apply btn bg-stone-900 text-white hover:bg-stone-700;
+}
+@utility btn-secondary {
+  @apply btn border border-stone-300 bg-white text-stone-800 hover:bg-stone-100;
+}
+@utility btn-danger {
+  @apply btn border border-red-200 bg-white text-red-700 hover:bg-red-50;
+}
+@utility card {
+  @apply rounded-xl border border-stone-200 bg-white p-5;
+}
+@utility pill {
+  @apply cursor-pointer rounded-full border px-3 py-1 text-sm transition;
+}

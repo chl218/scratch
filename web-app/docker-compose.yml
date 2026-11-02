@@ -1,0 +1,30 @@
+# Local services for Moodboard: `docker compose up -d`
+#   Postgres  -> localhost:5432 (set DATABASE_URL in .env.local, see .env.example)
+#   Mailpit   -> SMTP on localhost:1025, inbox at http://localhost:8025
+services:
+  db:
+    image: postgres:17.11-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: moodboard
+      POSTGRES_PASSWORD: moodboard
+      POSTGRES_DB: moodboard
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U moodboard -d moodboard"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  mail:
+    image: axllent/mailpit:v1.33.0
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:1025:1025"
+      - "127.0.0.1:8025:8025"
+
+volumes:
+  pgdata:

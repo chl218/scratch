@@ -116,6 +116,37 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     return args
 
 
+def describe_error(e: BaseException, username: str) -> tuple[int, str] | None:
+    """Map an exception to (exit code, user-facing message), or None if unexpected.
+
+    Shared by the terminal (main below) and the GUI (main-program.py), so both
+    explain failures the same way.
+    """
+    # Order matters: TooManyRequestsException is a kind of ConnectionException,
+    # and BadCredentialsException is a kind of LoginException.
+    if isinstance(e, ProfileNotExistsException):
+        return EXIT_NOT_FOUND, f"profile '{username}' does not exist."
+    if isinstance(e, (PrivateProfileNotFollowedException, LoginRequiredException)):
+        return EXIT_PRIVATE, (
+            f"{e}\nhint: log in (browser login or session ID) with an account that can see this profile."
+        )
+    if isinstance(e, (BadCredentialsException, LoginException)):
+        return EXIT_LOGIN, f"login failed: {e}"
+    if isinstance(e, TooManyRequestsException):
+        return EXIT_RATE_LIMIT, (
+            "Instagram is rate-limiting requests. Wait a while and re-run; "
+            "already-downloaded posts are skipped."
+        )
+    if isinstance(e, ConnectionException):
+        # instaloader reports blocks (401 Unauthorized / 429 Too Many Requests)
+        # as generic connection errors, so look for the status code in the message.
+        msg = str(e)
+        if any(code in msg for code in ("401", "429")):
+            return EXIT_RATE_LIMIT, "Instagram blocked the request (401/429). Wait and retry, or log in."
+        return EXIT_RATE_LIMIT, f"connection problem: {msg}"
+    return None
+
+
 def _err(msg: str) -> None:
     """Print an error to stderr. Messages can contain text from Instagram, so
     control characters are stripped to keep it from sending terminal escape codes."""
@@ -154,33 +185,18 @@ def main(argv: list[str] | None = None) -> int:
         # Step 2: download the posts.
         count = downloader.download_user(loader, args.username, args.limit, log=log)
 
-    # Each instaloader error becomes one readable line plus an exit code,
-    # instead of a traceback. Already-saved files are always kept.
-    except ProfileNotExistsException:
-        _err(f"profile '{args.username}' does not exist.")
-        return EXIT_NOT_FOUND
-    except (PrivateProfileNotFollowedException, LoginRequiredException) as e:
-        _err(f"{e}\nhint: use --cookies BROWSER (or --sessionid) with an account that can see this profile.")
-        return EXIT_PRIVATE
-    except (BadCredentialsException, LoginException) as e:
-        _err(f"login failed: {e}")
-        return EXIT_LOGIN
-    except TooManyRequestsException:
-        _err("Instagram is rate-limiting requests. Wait a while and re-run; "
-             "already-downloaded posts are skipped.")
-        return EXIT_RATE_LIMIT
-    except ConnectionException as e:
-        # instaloader reports blocks (401 Unauthorized / 429 Too Many Requests)
-        # as generic connection errors, so look for the status code in the message.
-        msg = str(e)
-        if any(code in msg for code in ("401", "429")):
-            _err("Instagram blocked the request (401/429). Wait and retry, or use --cookies.")
-            return EXIT_RATE_LIMIT
-        _err(f"connection problem: {msg}")
-        return EXIT_RATE_LIMIT
     except KeyboardInterrupt:
         print("\nInterrupted. Files saved so far are kept; re-run to continue.", file=sys.stderr)
         return EXIT_INTERRUPTED
+    except Exception as e:
+        # Known instaloader errors become one readable line plus an exit code,
+        # instead of a traceback. Already-saved files are always kept.
+        known = describe_error(e, args.username)
+        if known is None:
+            raise  # a bug, not a user problem: show the full traceback
+        code, msg = known
+        _err(msg)
+        return code
 
     log(f"Done. {count} post(s) saved to {args.output / args.username}")
     return EXIT_OK

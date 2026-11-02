@@ -166,3 +166,50 @@ def test_no_limit_downloads_pinned_posts_too(tmp_path, monkeypatch):
     loader, saved = _fake_feed(monkeypatch, tmp_path, feed, videos=False)
     assert downloader.download_user(loader, "u", log=lambda m: None) == 3
     assert sorted(saved) == ["p2", "p3", "pin"]
+
+
+def test_should_stop_ends_run_before_next_post(tmp_path, monkeypatch):
+    loader, saved = _fake_feed(monkeypatch, tmp_path, _posts(), videos=True)
+    downloader_calls = iter([False, False, True])  # stop before the 3rd post
+    count = downloader.download_user(
+        loader, "u", log=lambda m: None, should_stop=lambda: next(downloader_calls)
+    )
+    assert count == 2 and saved == ["i20", "v19"]
+
+
+@pytest.mark.parametrize("exc,code", [
+    ("ProfileNotExistsException", cli.EXIT_NOT_FOUND),
+    ("PrivateProfileNotFollowedException", cli.EXIT_PRIVATE),
+    ("LoginRequiredException", cli.EXIT_PRIVATE),
+    ("BadCredentialsException", cli.EXIT_LOGIN),
+    ("LoginException", cli.EXIT_LOGIN),
+    ("TooManyRequestsException", cli.EXIT_RATE_LIMIT),  # subclass of ConnectionException
+    ("ConnectionException", cli.EXIT_RATE_LIMIT),
+])
+def test_describe_error_maps_instaloader_errors(exc, code):
+    from instaloader import exceptions
+
+    result = cli.describe_error(getattr(exceptions, exc)("boom"), "someone")
+    assert result is not None and result[0] == code and result[1]
+
+
+def test_describe_error_ignores_unexpected_errors():
+    assert cli.describe_error(ValueError("bug"), "someone") is None
+
+
+def test_password_login_uses_injected_prompts(tmp_path, monkeypatch):
+    from instaloader.exceptions import TwoFactorAuthRequiredException
+
+    loader = downloader.build_loader(tmp_path, quiet=True)
+    monkeypatch.setattr(type(loader), "load_session_from_file", lambda self, u: (_ for _ in ()).throw(FileNotFoundError()))
+    calls = []
+
+    def fake_login(self, user, pw):
+        calls.append(("login", user, pw))
+        raise TwoFactorAuthRequiredException("2fa")
+
+    monkeypatch.setattr(type(loader), "login", fake_login)
+    monkeypatch.setattr(type(loader), "two_factor_login", lambda self, code: calls.append(("2fa", code)))
+    monkeypatch.setattr(type(loader), "save_session_to_file", lambda self: calls.append(("saved",)))
+    downloader.login(loader, "me", ask_password=lambda u: "pw!", ask_2fa=lambda: " 123456 ", log=lambda m: None)
+    assert calls == [("login", "me", "pw!"), ("2fa", "123456"), ("saved",)]

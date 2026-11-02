@@ -100,17 +100,39 @@ def scope_session_cookies(loader: instaloader.Instaloader) -> None:
 # Login, option 3: password (--login). Saves a session file for later runs.
 # --------------------------------------------------------------------------------------
 
-def _interactive_login(loader: instaloader.Instaloader, ig_user: str) -> None:
-    """Ask for the password (hidden) and, if Instagram wants it, a 2FA code."""
-    password = getpass.getpass(f"Instagram password for {ig_user}: ")
+def _ask_password_in_terminal(ig_user: str) -> str:
+    return getpass.getpass(f"Instagram password for {ig_user}: ")
+
+
+def _ask_2fa_in_terminal() -> str:
+    return input("Two-factor code: ")
+
+
+def _interactive_login(
+    loader: instaloader.Instaloader,
+    ig_user: str,
+    ask_password: Callable[[str], str],
+    ask_2fa: Callable[[], str],
+) -> None:
+    """Ask for the password and, if Instagram wants it, a 2FA code.
+
+    The ask_* functions are terminal prompts by default; the GUI passes dialogs.
+    """
+    password = ask_password(ig_user)
     try:
         loader.login(ig_user, password)
     except TwoFactorAuthRequiredException:
-        code = input("Two-factor code: ").strip()
+        code = ask_2fa().strip()
         loader.two_factor_login(code)
 
 
-def login(loader: instaloader.Instaloader, ig_user: str) -> None:
+def login(
+    loader: instaloader.Instaloader,
+    ig_user: str,
+    ask_password: Callable[[str], str] = _ask_password_in_terminal,
+    ask_2fa: Callable[[], str] = _ask_2fa_in_terminal,
+    log: Callable[[str], None] = print,
+) -> None:
     """Log in, reusing a saved session when one exists and is still valid.
 
     1. Session file exists and still works -> use it, no prompt.
@@ -125,16 +147,16 @@ def login(loader: instaloader.Instaloader, ig_user: str) -> None:
         loader.load_session_from_file(ig_user)
         scope_session_cookies(loader)
     except FileNotFoundError:
-        _interactive_login(loader, ig_user)  # case 3
+        _interactive_login(loader, ig_user, ask_password, ask_2fa)  # case 3
     else:
         # test_login() asks Instagram who we are; None means the session is dead.
         if loader.test_login() is None:      # case 2
-            print("Saved session expired, logging in again.")
+            log("Saved session expired, logging in again.")
             try:
                 os.remove(session_file)
             except OSError:
                 pass
-            _interactive_login(loader, ig_user)
+            _interactive_login(loader, ig_user, ask_password, ask_2fa)
         else:                                 # case 1
             return
     # Cases 2 and 3 only: we have a fresh login, so save it for next time.
@@ -221,8 +243,12 @@ def download_user(
     username: str,
     limit: int | None = None,
     log: Callable[[str], None] = print,
+    should_stop: Callable[[], bool] = lambda: False,
 ) -> int:
     """Download a user's posts, newest first. Returns how many were saved.
+
+    should_stop is checked before each post; returning True ends the run early
+    (the GUI's Stop button uses it). The post being saved is always finished first.
 
     Video posts are skipped unless the loader was built with videos=True, and
     --limit counts only the posts that are kept. Pinned posts are downloaded like
@@ -264,6 +290,9 @@ def download_user(
 
     count = 0
     for post in posts:
+        if should_stop():
+            log("Stopped.")
+            break
         count += 1
         log(f"[{count}/{total}] {post.date_utc:%Y-%m-%d} {post.shortcode}")
         # Saves the media (+ .txt/.json). Files that already exist are skipped,
