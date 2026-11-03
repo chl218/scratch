@@ -10,10 +10,11 @@ import {
 } from "@/app/actions/auth";
 import { FormMessage, SubmitButton } from "./forms";
 
-export function LoginForm() {
+export function LoginForm({ next }: { next?: string }) {
   const [state, action] = useActionState(loginAction, undefined);
   return (
     <form action={action} className="space-y-4">
+      {next && <input type="hidden" name="next" value={next} />}
       <div>
         <label className="label" htmlFor="email">Email</label>
         <input id="email" name="email" type="email" autoComplete="email" className="input" required />
@@ -25,7 +26,7 @@ export function LoginForm() {
       <FormMessage state={state} />
       <SubmitButton className="btn-primary w-full" pendingText="Logging in…">Log in</SubmitButton>
       <p className="text-center text-sm">
-        <Link href="/forgot" className="text-stone-600 underline hover:text-stone-900">Forgot your password?</Link>
+        <Link href="/forgot" className="text-loupe underline underline-offset-4 hover:text-graphite">Forgot your password?</Link>
       </p>
     </form>
   );
@@ -48,7 +49,7 @@ export function SetupForm() {
         <input id="password" name="password" type="password" autoComplete="new-password" minLength={8} className="input" required />
       </div>
       <FormMessage state={state} />
-      <SubmitButton className="btn-primary w-full" pendingText="Creating…">Create admin account</SubmitButton>
+      <SubmitButton className="btn-primary w-full" pendingText="Creating…">Create the Super Admin account</SubmitButton>
     </form>
   );
 }
@@ -88,7 +89,7 @@ export function ForgotForm() {
       <FormMessage state={state} />
       <SubmitButton className="btn-primary w-full" pendingText="Sending…">Send reset link</SubmitButton>
       <p className="text-center text-sm">
-        <Link href="/login" className="text-stone-600 underline hover:text-stone-900">Back to log in</Link>
+        <Link href="/login" className="text-loupe underline underline-offset-4 hover:text-graphite">Back to log in</Link>
       </p>
     </form>
   );

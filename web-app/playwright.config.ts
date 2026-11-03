@@ -31,6 +31,7 @@ export default defineConfig({
       MAIL_DIR: ".e2e-data/mail",
       SMTP_URL: "",
       DATABASE_URL: "",
+      DIGEST_POLL_MS: "1000",
     },
   },
 });

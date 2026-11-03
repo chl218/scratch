@@ -1,75 +1,106 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { AcceptMark, RejectMark } from "./Marks";
 
 export type TileState = "undecided" | "accepted" | "rejected";
 
-const stateStyles: Record<TileState, { ring: string; badge: string; label: string }> = {
-  undecided: { ring: "ring-transparent", badge: "", label: "" },
-  accepted: { ring: "ring-emerald-500", badge: "bg-emerald-600", label: "Accepted" },
-  rejected: { ring: "ring-stone-400", badge: "bg-stone-600", label: "Rejected" },
-};
+/** Justified-row container (SPEC §4): every photo keeps its shape; nothing is cropped. */
+export function JustifiedGrid({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return <div className={`justified ${className}`}>{children}</div>;
+}
 
-/** One square in a photo grid. Shows the state and comment count (SPEC §4). */
+/**
+ * One photo in a justified row: a print on the light table. Shows the grease-pencil
+ * mark for its state, a ♥ for favourites and the comment count. `actions` sit under
+ * the photo on touch screens and over it on hover elsewhere.
+ */
 export function PhotoTile({
+  id,
   src,
   alt,
+  width,
+  height,
   onOpen,
   state,
+  justChanged = false,
+  favourite,
   commentCount = 0,
   selected,
-  footer,
+  badge,
+  actions,
+  caption,
+  openLabel,
 }: {
-  src: string;
+  id: string;
+  src: string | null;
   alt: string;
+  width: number;
+  height: number;
   onOpen?: () => void;
   state?: TileState;
+  /** True right after the person changed the state, so the mark draws itself. */
+  justChanged?: boolean;
+  favourite?: boolean;
   commentCount?: number;
   selected?: boolean;
-  footer?: ReactNode;
+  badge?: string;
+  actions?: ReactNode;
+  caption?: ReactNode;
+  openLabel?: string;
 }) {
-  const s = state ? stateStyles[state] : null;
+  const ar = Math.max(0.4, Math.min(3, width / height || 1));
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="jt jt-hover" style={{ ["--ar" as string]: ar }}>
       <button
         type="button"
         onClick={onOpen}
-        className={`group relative aspect-square cursor-pointer overflow-hidden rounded-lg bg-stone-200 ring-3 ${
-          selected ? "ring-sky-500" : (s?.ring ?? "ring-transparent")
+        aria-label={openLabel ?? alt}
+        disabled={!onOpen}
+        className={`jt-frame cursor-pointer overflow-hidden bg-sleeve disabled:cursor-default ${
+          selected ? "outline-3 outline-offset-2 outline-marker" : ""
         }`}
+        style={{ paddingBottom: `${100 / ar}%` }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element -- access-checked image route */}
-        <img
-          src={src}
-          alt={alt}
-          loading="lazy"
-          draggable={false}
-          onContextMenu={(e) => e.preventDefault()}
-          className={`h-full w-full object-cover transition group-hover:scale-[1.02] ${
-            state === "rejected" ? "opacity-50 grayscale" : ""
-          }`}
-        />
-        {s?.label && (
-          <span className={`absolute left-2 top-2 rounded-full px-2 py-0.5 text-xs font-medium text-white ${s.badge}`}>
-            {s.label}
+        {src ? (
+          // eslint-disable-next-line @next/next/no-img-element -- access-checked image route
+          <img
+            src={src}
+            alt={alt}
+            loading="lazy"
+            draggable={false}
+            onContextMenu={(e) => e.preventDefault()}
+            className={state === "rejected" ? "opacity-45" : ""}
+          />
+        ) : (
+          <span className="absolute inset-0 flex items-center justify-center p-3 text-center text-sm text-loupe">
+            {alt}
           </span>
         )}
-        {selected && (
-          <span className="absolute left-2 top-2 rounded-full bg-sky-600 px-2 py-0.5 text-xs font-medium text-white">
-            Selected
+        {state === "accepted" && <AcceptMark seed={id} drawn={justChanged} />}
+        {state === "rejected" && <RejectMark seed={id} drawn={justChanged} />}
+        {badge && (
+          <span className="absolute left-1.5 top-1.5 rounded-[4px] bg-sheet/90 px-1.5 py-0.5 text-xs font-semibold text-graphite">
+            {badge}
           </span>
         )}
-        {commentCount > 0 && (
-          <span className="absolute bottom-2 right-2 rounded-full bg-black/60 px-2 py-0.5 text-xs text-white">
-            💬 {commentCount}
+        {(favourite || commentCount > 0) && (
+          <span className="absolute right-1.5 top-1.5 flex gap-1">
+            {favourite && (
+              <span className="rounded-[4px] bg-sheet/90 px-1.5 py-0.5 text-xs text-marker" aria-label="Favourite">
+                ♥
+              </span>
+            )}
+            {commentCount > 0 && (
+              <span className="rounded-[4px] bg-sheet/90 px-1.5 py-0.5 text-xs text-graphite" aria-label={`${commentCount} comments`}>
+                {commentCount} {commentCount === 1 ? "comment" : "comments"}
+              </span>
+            )}
           </span>
         )}
       </button>
-      {footer}
+      {actions && <div className="jt-actions">{actions}</div>}
+      {caption && <div className="mt-1 truncate text-xs text-loupe">{caption}</div>}
     </div>
   );
-}
-
-export function Grid({ children }: { children: ReactNode }) {
-  return <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">{children}</div>;
 }

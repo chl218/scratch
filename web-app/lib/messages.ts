@@ -11,8 +11,9 @@ import type { ThreadMessage } from "@/components/MessageThread";
 export async function loadThread(clientId: string, reader: "admin" | "client"): Promise<ThreadMessage[]> {
   const db = await getDb();
   const rows = await db
-    .select()
+    .select({ m: schema.messages, senderName: schema.users.name })
     .from(schema.messages)
+    .leftJoin(schema.users, eq(schema.users.id, schema.messages.senderUserId))
     .where(eq(schema.messages.clientId, clientId))
     .orderBy(schema.messages.createdAt);
   const other = reader === "admin" ? "client" : "admin";
@@ -22,9 +23,10 @@ export async function loadThread(clientId: string, reader: "admin" | "client"): 
     .where(
       and(eq(schema.messages.clientId, clientId), eq(schema.messages.sender, other), isNull(schema.messages.readAt)),
     );
-  return rows.map((m) => ({
+  return rows.map(({ m, senderName }) => ({
     id: m.id,
     sender: m.sender,
+    senderName: senderName ?? (m.sender === "admin" ? "Studio" : ""),
     body: m.body,
     createdAt: m.createdAt.toISOString(),
     unread: m.sender === other && m.readAt === null,

@@ -14,24 +14,24 @@ export default async function OutboxPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Outbox</h1>
-        <p className="text-sm text-stone-600">
+        <h1 className="display text-[36px]">Outbox</h1>
+        <p className="text-sm text-loupe">
           Emails aren&apos;t really sent while running locally. They&apos;re saved here (and in the <code>.mail/</code> folder)
           so you can check them and open the links. Set <code>SMTP_URL</code> to send real emails.
         </p>
       </div>
       {mails.length === 0 ? (
-        <p className="text-sm text-stone-500">No emails yet.</p>
+        <p className="text-sm text-loupe">No emails yet.</p>
       ) : (
         <ul className="space-y-3">
           {mails.map((m) => (
-            <li key={m.file} className="card space-y-2">
+            <li key={m.file} className="panel space-y-2">
               <div className="flex flex-wrap justify-between gap-2">
                 <p className="font-medium">{m.subject}</p>
-                <p className="text-xs text-stone-500">{formatDateTime(m.sentAt)}</p>
+                <p className="text-xs text-loupe">{formatDateTime(m.sentAt)}</p>
               </div>
-              <p className="text-xs text-stone-500">To: {m.to}</p>
-              <pre className="whitespace-pre-wrap break-words font-sans text-sm text-stone-700">
+              <p className="text-xs text-loupe">To: {m.to}</p>
+              <pre className="whitespace-pre-wrap break-words font-sans text-sm text-graphite">
                 {linkify(m.text)}
               </pre>
             </li>
@@ -45,7 +45,7 @@ export default async function OutboxPage() {
 function linkify(text: string) {
   return text.split(/(https?:\/\/\S+)/g).map((part, i) =>
     /^https?:\/\//.test(part) ? (
-      <a key={i} href={part} className="text-sky-700 underline" target="_blank" rel="noreferrer">
+      <a key={i} href={part} className="text-graphite underline" target="_blank" rel="noreferrer">
         {part}
       </a>
     ) : (

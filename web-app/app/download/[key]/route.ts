@@ -4,9 +4,11 @@ import { eq } from "drizzle-orm";
 import { ZipArchive } from "archiver";
 import { tryPageAccess } from "@/lib/access";
 import { getDb, schema } from "@/lib/db";
+import { cleanOriginalKey } from "@/lib/images";
 import * as storage from "@/lib/storage";
 
-// Downloads every shoot photo on a page as one .zip (F8).
+// Downloads every Shoot Photo on a page as one .zip (F8). Clients get the copies
+// with metadata removed (F1); admins get the files as uploaded.
 // [key] is the page access key ("t:<token>" or "p:<pageId>").
 export async function GET(_req: NextRequest, ctx: RouteContext<"/download/[key]">) {
   const { key } = await ctx.params;
@@ -27,8 +29,15 @@ export async function GET(_req: NextRequest, ctx: RouteContext<"/download/[key]"
   // Photos are already compressed, so store them as-is (fast, same size).
   const zip = new ZipArchive({ store: true });
   const used = new Set<string>();
+  const asClient = access.actor.type === "client";
   for (const row of rows) {
-    const { stream } = await storage.getStream(row.originalKey);
+    let key = row.originalKey;
+    if (asClient) {
+      const clean = await cleanOriginalKey(row);
+      if (clean.created) await db.update(schema.shootPhotos).set({ cleanKey: clean.key }).where(eq(schema.shootPhotos.id, row.id));
+      key = clean.key;
+    }
+    const { stream } = await storage.getStream(key);
     zip.append(stream, { name: uniqueName(row.filename, used) });
   }
   void zip.finalize();

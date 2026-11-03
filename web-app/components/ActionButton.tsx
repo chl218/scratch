@@ -34,15 +34,15 @@ export function ActionButton({
             } catch (err) {
               // Redirects from actions arrive as special errors that Next handles itself.
               if (err && typeof err === "object" && "digest" in err) return;
-              setResult({ error: "Something went wrong." });
+              setResult({ error: "That didn't work. Check your connection and try again." });
             }
           });
         }}
       >
         {pending ? (pendingText ?? "Working…") : children}
       </button>
-      {result.error && <span className="text-sm text-red-700">{result.error}</span>}
-      {result.ok && <span className="text-sm text-emerald-700">{result.ok}</span>}
+      {result.error && <span className="error-note" role="alert">⚠ {result.error}</span>}
+      {result.ok && <span className="ok-note" role="status">{result.ok}</span>}
     </span>
   );
 }

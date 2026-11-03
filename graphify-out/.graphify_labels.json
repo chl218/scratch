@@ -1,1 +1,27 @@
-{"0": "Moodboard Pages & ORM", "1": "Moodboard Board Actions", "2": "Photo Upload API Routes", "3": "Account & Inbox Pages", "4": "Moodboard Spec & Architecture", "5": "Admin Pages & Image FS", "6": "HookHub Agent Guidance", "7": "my-app Dependencies", "8": "igdl CLI Tests", "9": "Python Security Guidelines", "10": "igdl Downloader & Rate Limits", "11": "igdl Desktop GUI", "12": "Postgres Docker Compose", "13": "my-app TS Config", "14": "web-app TS Config", "15": "igdl Entry & Security Tests", "16": "HookHub UI Components", "17": "web-app Runtime Deps", "18": "igdl Argument Parsing", "19": "web-app Dev Tooling", "20": "Moodboard DB Schema", "21": "igdl Error Handling", "22": "EXIF Hashtag Tagging", "23": "Tagging Tests", "24": "web-app Package Meta", "25": "web-app npm Scripts", "26": "my-app Root Layout", "27": "ESLint Configs", "28": "web-app Root Layout", "29": "PGlite Connection", "30": "Playwright E2E", "31": "Archiver Dependency", "32": "Nodemailer Dependency", "33": "tsx Dependency", "34": "pg Types", "35": "Tailwind Turbopack", "36": "HEIC Type Shim", "37": "igdl Package"}
+{
+  "1": "Moodboard Board Actions",
+  "3": "Account & Inbox Pages",
+  "5": "Admin Pages & Image FS",
+  "6": "HookHub Agent Guidance",
+  "7": "my-app Dependencies",
+  "8": "igdl CLI Tests",
+  "9": "Python Security Guidelines",
+  "10": "igdl Downloader & Rate Limits",
+  "11": "igdl Desktop GUI",
+  "12": "Postgres Docker Compose",
+  "13": "my-app TS Config",
+  "14": "web-app TS Config",
+  "16": "HookHub UI Components",
+  "17": "web-app Runtime Deps",
+  "18": "igdl Argument Parsing",
+  "20": "Moodboard DB Schema",
+  "22": "EXIF Hashtag Tagging",
+  "23": "Tagging Tests",
+  "25": "web-app npm Scripts",
+  "26": "my-app Root Layout",
+  "27": "ESLint Configs",
+  "28": "web-app Root Layout",
+  "34": "pg Types",
+  "36": "HEIC Type Shim",
+  "37": "igdl Package"
+}

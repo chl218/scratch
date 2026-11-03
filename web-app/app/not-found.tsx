@@ -2,12 +2,12 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <main className="flex flex-1 flex-col items-center justify-center gap-3 px-4 py-20 text-center">
-      <h1 className="text-2xl font-semibold">Page not found</h1>
-      <p className="max-w-sm text-sm text-stone-600">
-        This link may have been changed or turned off. Ask your photographer for a new one.
+    <main className="flex flex-1 flex-col items-start justify-center gap-4 px-6 py-20 sm:px-16">
+      <h1 className="display text-[48px] sm:text-[72px]">Not found</h1>
+      <p className="max-w-[50ch] text-loupe">
+        This link may have changed or been turned off. Ask the studio for a new one.
       </p>
-      <Link href="/" className="btn-secondary">Go home</Link>
+      <Link href="/" className="btn-secondary">Go to the studio&apos;s home page</Link>
     </main>
   );
 }

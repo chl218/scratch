@@ -26,18 +26,25 @@ export default async function InvitePage(props: PageProps<"/invite/[token]">) {
   if (!row) {
     return (
       <AuthCard title="Link expired" subtitle="This link has expired or was already used.">
-        <p className="text-center text-sm">
-          <Link href="/forgot" className="underline">Request a new password link</Link> or ask your photographer for a new invite.
+        <p className="text-sm">
+          <Link href="/forgot" className="font-semibold underline underline-offset-4">Request a new password link</Link> or
+          ask the studio for a new invite.
         </p>
       </AuthCard>
     );
   }
 
-  const invite = row.purpose === "invite";
+  const invite = row.purpose !== "reset";
   return (
     <AuthCard
       title={invite ? "Create your account" : "Choose a new password"}
-      subtitle={invite ? "Use your account to message your photographer and pay invoices." : undefined}
+      subtitle={
+        row.purpose === "admin_invite"
+          ? "You've been invited as an admin of the studio."
+          : invite
+            ? "With an account you can comment on photos, message the studio and book shoots."
+            : undefined
+      }
     >
       <PasswordForm
         action={completeAccountTokenAction.bind(null, token)}

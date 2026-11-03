@@ -1,37 +1,247 @@
 @import "tailwindcss";
 
+/* ReferenceMePlzQQ design tokens (SPEC §5): a light table, prints, a red grease pencil. */
+:root {
+  --table: #f3f6f8;
+  --sheet: #ffffff;
+  --graphite: #1f2529;
+  --loupe: #66717a;
+  --sleeve: #d5dce1;
+  --marker: #d0262e;
+  --on-graphite: #ffffff;
+  color-scheme: light;
+}
+
+/* Dark mode is a darkroom mid-grey, never black. Follows the system unless the visitor picks a theme. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --table: #3c4044;
+    --sheet: #484d52;
+    --graphite: #f1f3f4;
+    --loupe: #b5bcc2;
+    --sleeve: #5a6066;
+    --marker: #ff5a5f;
+    --on-graphite: #1f2529;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --table: #3c4044;
+  --sheet: #484d52;
+  --graphite: #f1f3f4;
+  --loupe: #b5bcc2;
+  --sleeve: #5a6066;
+  --marker: #ff5a5f;
+  --on-graphite: #1f2529;
+  color-scheme: dark;
+}
+
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --color-table: var(--table);
+  --color-sheet: var(--sheet);
+  --color-graphite: var(--graphite);
+  --color-loupe: var(--loupe);
+  --color-sleeve: var(--sleeve);
+  --color-marker: var(--marker);
+  --color-on-graphite: var(--on-graphite);
 }
 
 body {
-  background: #fafaf9;
-  color: #1c1917;
+  background: var(--table);
+  color: var(--graphite);
+  font-size: 16px;
+  line-height: 1.5;
 }
 
-/* Shared form and layout styles */
+/* Display type: Archivo condensed and heavy, like lettering along a film edge. */
+.display {
+  font-family: var(--font-archivo), ui-sans-serif, sans-serif;
+  font-stretch: 68%;
+  font-variation-settings: "wdth" 68;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.02;
+}
+
+:focus-visible {
+  outline: 2px solid var(--marker);
+  outline-offset: 2px;
+}
+
+/* ---------- Controls: soft tools (6px radius); photos stay square. ---------- */
+
 @utility input {
-  @apply w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm outline-none focus:border-stone-500 focus:ring-2 focus:ring-stone-200;
+  @apply w-full rounded-[6px] border border-sleeve bg-sheet px-3 py-2 text-[16px] text-graphite outline-none placeholder:text-loupe focus:border-graphite sm:text-sm;
 }
 @utility label {
-  @apply mb-1 block text-sm font-medium text-stone-700;
+  @apply mb-1 block text-sm font-semibold;
 }
 @utility btn {
-  @apply inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-50;
+  @apply inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-[6px] px-3.5 py-2 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50;
 }
 @utility btn-primary {
-  @apply btn bg-stone-900 text-white hover:bg-stone-700;
+  @apply btn bg-graphite text-on-graphite hover:opacity-85;
 }
 @utility btn-secondary {
-  @apply btn border border-stone-300 bg-white text-stone-800 hover:bg-stone-100;
+  @apply btn border border-sleeve bg-sheet text-graphite hover:border-graphite;
+}
+@utility btn-quiet {
+  @apply btn px-2 text-loupe hover:text-graphite;
 }
 @utility btn-danger {
-  @apply btn border border-red-200 bg-white text-red-700 hover:bg-red-50;
+  @apply btn border border-sleeve bg-sheet text-marker hover:border-marker;
 }
-@utility card {
-  @apply rounded-xl border border-stone-200 bg-white p-5;
+@utility panel {
+  @apply rounded-[6px] border border-sleeve bg-sheet p-5;
 }
 @utility pill {
-  @apply cursor-pointer rounded-full border px-3 py-1 text-sm transition;
+  @apply inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-sleeve bg-sheet px-3 py-1 text-sm text-graphite transition-colors hover:border-graphite;
+}
+@utility pill-on {
+  @apply border-marker bg-marker text-white hover:border-marker;
+}
+@utility error-note {
+  @apply border-l-2 border-marker pl-3 text-sm text-graphite;
+}
+@utility ok-note {
+  @apply text-sm text-loupe;
+}
+
+/* ---------- Working grid: justified rows, nothing cropped (§4). ---------- */
+
+.justified {
+  --row-h: 180px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+@media (min-width: 768px) {
+  .justified {
+    --row-h: 260px;
+  }
+}
+/* Stops the last row from stretching into giant tiles. */
+.justified::after {
+  content: "";
+  flex-grow: 999999;
+}
+.justified > .jt {
+  flex-grow: var(--ar);
+  flex-basis: calc(var(--ar) * var(--row-h));
+  min-width: 0;
+}
+.jt-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+.jt-frame > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Choice buttons: a bar under the photo on touch screens, an overlay on hover elsewhere. */
+.jt-actions {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .jt-hover {
+    position: relative;
+  }
+  .jt-hover .jt-actions {
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+    margin: 0;
+    opacity: 0;
+    transition: opacity 120ms;
+  }
+  .jt-hover:hover .jt-actions,
+  .jt-hover:focus-within .jt-actions {
+    opacity: 1;
+  }
+}
+
+/* ---------- Portfolio mosaic: an interlocking grid, packed on the server (§4). ---------- */
+
+.mosaic {
+  container-type: inline-size;
+}
+.mosaic-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: calc(100cqw / 2);
+}
+.mosaic-grid > * {
+  grid-column: var(--c2);
+  grid-row: var(--r2);
+  display: var(--d2, block);
+}
+@media (min-width: 640px) {
+  .mosaic-grid {
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: calc(100cqw / 4);
+  }
+  .mosaic-grid > * {
+    grid-column: var(--c4);
+    grid-row: var(--r4);
+    display: var(--d4, block);
+  }
+}
+@media (min-width: 1024px) {
+  .mosaic-grid {
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: calc(100cqw / 6);
+  }
+  .mosaic-grid > * {
+    grid-column: var(--c6);
+    grid-row: var(--r6);
+    display: var(--d6, block);
+  }
+}
+
+/* ---------- Grease-pencil marks: the one bold element (§5). ---------- */
+
+.mark path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.mark-accept path {
+  stroke: var(--marker);
+  stroke-width: 3.2;
+}
+.mark-reject path {
+  stroke: #1f2529;
+  stroke-width: 3.4;
+}
+.mark-reject path.halo {
+  stroke: #ffffff;
+  stroke-width: 6.5;
+}
+.mark-draw path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: mark-draw 260ms ease-out forwards;
+}
+.mark-draw path:nth-child(n + 3) {
+  animation-delay: 110ms;
+}
+@keyframes mark-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mark-draw path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
 }

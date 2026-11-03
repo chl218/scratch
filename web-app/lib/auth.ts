@@ -15,6 +15,7 @@ export type CurrentUser = {
   email: string;
   name: string;
   role: "admin" | "client";
+  isSuperAdmin: boolean;
 };
 
 export async function hashPassword(password: string): Promise<string> {
@@ -60,16 +61,30 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
       email: schema.users.email,
       name: schema.users.name,
       role: schema.users.role,
+      isSuperAdmin: schema.users.isSuperAdmin,
       disabled: schema.users.disabled,
     })
     .from(schema.sessions)
     .innerJoin(schema.users, eq(schema.users.id, schema.sessions.userId))
-    .where(
-      and(eq(schema.sessions.id, hashToken(token)), gt(schema.sessions.expiresAt, new Date())),
-    );
+    .where(and(eq(schema.sessions.id, hashToken(token)), gt(schema.sessions.expiresAt, new Date())));
   if (!row || row.disabled) return null;
-  return { id: row.id, email: row.email, name: row.name, role: row.role };
+  return { id: row.id, email: row.email, name: row.name, role: row.role, isSuperAdmin: row.isSuperAdmin };
 });
+
+/** The client record of the logged-in client, or null. */
+export const getCurrentClient = cache(async () => {
+  const user = await getCurrentUser();
+  if (!user || user.role !== "client") return null;
+  const db = await getDb();
+  const [client] = await db.select().from(schema.clients).where(eq(schema.clients.userId, user.id));
+  return client ? { user, client } : null;
+});
+
+/** Where a user lands after logging in. */
+export function homeFor(user: CurrentUser, username?: string | null): string {
+  if (user.role === "admin") return "/admin";
+  return username ? `/u/${username}` : "/";
+}
 
 export async function requireAdmin(): Promise<CurrentUser> {
   const user = await getCurrentUser();
@@ -77,22 +92,28 @@ export async function requireAdmin(): Promise<CurrentUser> {
   return user;
 }
 
+export async function requireSuperAdmin(): Promise<CurrentUser> {
+  const user = await requireAdmin();
+  if (!user.isSuperAdmin) redirect("/admin");
+  return user;
+}
+
 /** The logged-in client and their client record. */
 export async function requireClient() {
-  const user = await getCurrentUser();
-  if (!user || user.role !== "client") redirect("/login");
-  const db = await getDb();
-  const [client] = await db
-    .select()
-    .from(schema.clients)
-    .where(eq(schema.clients.userId, user.id));
-  if (!client) redirect("/login");
-  return { user, client };
+  const found = await getCurrentClient();
+  if (!found) redirect("/login");
+  return found;
 }
 
 /** Same as requireAdmin, but throws instead of redirecting (for actions and API routes). */
 export async function assertAdmin(): Promise<CurrentUser> {
   const user = await getCurrentUser();
   if (!user || user.role !== "admin") throw new Error("Not authorized");
+  return user;
+}
+
+export async function assertSuperAdmin(): Promise<CurrentUser> {
+  const user = await assertAdmin();
+  if (!user.isSuperAdmin) throw new Error("Only the Super Admin can do this");
   return user;
 }

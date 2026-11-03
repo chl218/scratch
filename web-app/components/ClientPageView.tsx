@@ -1,31 +1,70 @@
-import type { PageAccess } from "@/lib/access";
-import { pageInspirations, pageShootPhotos } from "@/lib/data";
+import Link from "next/link";
+import { eq } from "drizzle-orm";
+import { isLocked, type PageAccess } from "@/lib/access";
+import { getDb, schema } from "@/lib/db";
+import { pageReferences, pageShootPhotos } from "@/lib/data";
 import { formatDate } from "@/lib/shared";
-import { ClientBoard } from "./ClientBoard";
+import { Board, YourPhotos } from "./ClientBoard";
+import type { CommentPermission } from "./Comments";
 
-/** Server part of a client page: loads the data, then hands it to ClientBoard. */
-export async function ClientPageView({ access }: { access: PageAccess }) {
+/** Names of the client's assigned admins, shown as their contacts (F12). */
+async function contactNames(clientId: string): Promise<string[]> {
+  const db = await getDb();
+  const rows = await db
+    .select({ name: schema.users.name, display: schema.teamProfiles.displayName })
+    .from(schema.clientAdmins)
+    .innerJoin(schema.users, eq(schema.users.id, schema.clientAdmins.adminId))
+    .leftJoin(schema.teamProfiles, eq(schema.teamProfiles.userId, schema.users.id))
+    .where(eq(schema.clientAdmins.clientId, clientId));
+  return rows.map((r) => r.display || r.name);
+}
+
+/**
+ * A client page (F3, F6). Before the lock: the Board of Reference Pictures.
+ * After the lock: only Your Photos, plus a Home button.
+ */
+export async function ClientPageView({ access, path }: { access: PageAccess; path: string }) {
   const { page, client } = access;
-  const [inspirations, shootPhotos] = await Promise.all([
-    pageInspirations(page.id),
-    page.shootPhotosVisible ? pageShootPhotos(page.id) : Promise.resolve(null),
+  const locked = isLocked(page);
+  const [references, shootPhotos, contacts] = await Promise.all([
+    locked ? Promise.resolve([]) : pageReferences(page.id),
+    locked ? pageShootPhotos(page.id) : Promise.resolve([]),
+    contactNames(client.id),
   ]);
+  const permission: CommentPermission = access.actor.userId
+    ? { canComment: true }
+    : { canComment: false, loginHref: `/login?next=${encodeURIComponent(path)}`, hasAccount: Boolean(client.userId) };
 
   return (
     <div className="space-y-6">
-      <header className="space-y-1">
-        <p className="text-sm text-stone-500">For {client.name}</p>
-        <h1 className="text-2xl font-semibold tracking-tight">{page.title}</h1>
-        {page.shootDate && <p className="text-sm text-stone-600">Shoot date: {formatDate(page.shootDate)}</p>}
-        {page.notes && <p className="max-w-2xl whitespace-pre-wrap pt-2 text-sm text-stone-700">{page.notes}</p>}
-      </header>
-      {!page.shootPhotosVisible && (
-        <p className="rounded-lg bg-stone-100 px-4 py-3 text-sm text-stone-700">
-          Accept the photos whose style you like and reject the ones you don&apos;t. Your choices save automatically, and
-          you can change them any time.
+      <header className="space-y-2">
+        <h1 className="display text-[48px] sm:text-[72px]">{page.title}</h1>
+        <p className="text-loupe">
+          For {client.name}
+          {page.shootDate && <>, shoot on {formatDate(page.shootDate)}</>}
+          {contacts.length > 0 && <>. With {contacts.join(" and ")} from the studio</>}.
         </p>
+        {page.notes && !locked && <p className="max-w-[65ch] whitespace-pre-wrap pt-1">{page.notes}</p>}
+      </header>
+
+      {locked ? (
+        <YourPhotos accessKey={access.key} photos={shootPhotos} favouritesLimit={page.favouritesLimit} permission={permission} />
+      ) : (
+        <>
+          <div className="flex flex-wrap items-baseline justify-between gap-3">
+            <p className="max-w-[65ch] text-loupe">
+              Accept the pictures whose look you like and reject the rest. Choices save as you go, and you can change them
+              until your photos are ready.
+            </p>
+            {client.username && (
+              <Link href={`/u/${client.username}?page=${page.id}`} className="btn-secondary">
+                Find more references
+              </Link>
+            )}
+          </div>
+          <Board accessKey={access.key} references={references} permission={permission} />
+        </>
       )}
-      <ClientBoard accessKey={access.key} inspirations={inspirations} shootPhotos={shootPhotos} />
     </div>
   );
 }

@@ -7,7 +7,7 @@ import { setPhotoTags } from "@/lib/data";
 import { parseTags } from "@/lib/shared";
 import * as storage from "@/lib/storage";
 
-// Uploads one library photo (F1). The browser sends files one at a time so
+// Uploads one Reference Picture to the library (F1). The browser sends files one at a time so
 // each request stays under the 50 MB limit. Route handlers have no 1 MB body
 // cap (that applies to server actions only).
 export async function POST(req: NextRequest) {
@@ -20,12 +20,15 @@ export async function POST(req: NextRequest) {
   const title = String(form.get("title") ?? "").trim().slice(0, 200);
   const notes = String(form.get("notes") ?? "").trim().slice(0, 2000);
   const tags = parseTags(String(form.get("tags") ?? ""));
+  const credit = String(form.get("credit") ?? "").trim().slice(0, 200);
+  const rawUrl = String(form.get("sourceUrl") ?? "").trim().slice(0, 1000);
+  const sourceUrl = /^https?:\/\//i.test(rawUrl) ? rawUrl : "";
 
   const photoId = randomUUID();
   try {
     const stored = await storeImage(file, `library/${photoId}`);
     const db = await getDb();
-    await db.insert(schema.photos).values({ id: photoId, title, notes, ...stored });
+    await db.insert(schema.photos).values({ id: photoId, title, notes, credit, sourceUrl, ...stored });
     await setPhotoTags(photoId, tags);
     return Response.json({ id: photoId });
   } catch (err) {

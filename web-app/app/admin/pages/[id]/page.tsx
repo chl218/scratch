@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { requireAdmin } from "@/lib/auth";
 import { getDb, schema } from "@/lib/db";
-import { pageInspirations, pageShootPhotos } from "@/lib/data";
+import { pageReferences, pageShootPhotos } from "@/lib/data";
 import { appUrl } from "@/lib/tokens";
 import {
   deletePageAction,
@@ -16,7 +16,7 @@ import {
 import { PageForm } from "@/components/AdminForms";
 import { ActionButton } from "@/components/ActionButton";
 import { Uploader } from "@/components/Uploader";
-import { AdminInspirations, AdminShootPhotos, AutoRefresh, CopyLink } from "@/components/AdminPageBoard";
+import { AdminReferences, AdminShootPhotos, AutoRefresh, CopyLink } from "@/components/AdminPageBoard";
 
 export const metadata = { title: "Client page" };
 
@@ -32,27 +32,31 @@ export default async function AdminClientPage(props: PageProps<"/admin/pages/[id
     .where(eq(schema.clientPages.id, id));
   if (!row) notFound();
   const { page, client } = row;
-  const [inspirations, shootPhotos] = await Promise.all([pageInspirations(id), pageShootPhotos(id)]);
+  const [references, shootPhotos] = await Promise.all([pageReferences(id, { includeHidden: true }), pageShootPhotos(id)]);
+  const locked = page.shootPhotosVisible;
 
   return (
-    <div className="space-y-8">
-      <AutoRefresh />
+    <div className="max-w-6xl space-y-8">
+      <AutoRefresh pageId={page.id} />
       <div>
-        <Link href={`/admin/clients/${client.id}`} className="text-sm text-stone-500 hover:text-stone-900">
-          ← {client.name}
-        </Link>
-        <h1 className="text-2xl font-semibold tracking-tight">{page.title}</h1>
+        <Link href={`/admin/clients/${client.id}`} className="text-sm text-loupe hover:text-graphite">{client.name}</Link>
+        <h1 className="display text-[36px]">{page.title}</h1>
+        <p className="text-sm text-loupe">
+          {locked
+            ? "Locked: the client sees only Your Photos. Accepted references were saved for them."
+            : "Open: the client is choosing reference pictures."}
+        </p>
       </div>
 
-      <section className="card space-y-3">
+      <section className="panel space-y-3">
         <h2 className="font-semibold">Private link</h2>
         {page.linkToken ? (
           <>
             <CopyLink url={appUrl(`/c/${page.linkToken}`)} />
-            <p className="text-xs text-stone-500">Anyone with this link can view and choose photos. It doesn&apos;t expire.</p>
+            <p className="text-xs text-loupe">Anyone with this link can choose references, favourite and download. It doesn&apos;t expire.</p>
           </>
         ) : (
-          <p className="text-sm text-amber-800">
+          <p className="error-note">
             The link is turned off. {client.userId ? "The client can still open this page from their account." : ""}
           </p>
         )}
@@ -64,11 +68,7 @@ export default async function AdminClientPage(props: PageProps<"/admin/pages/[id
             {page.linkToken ? "Make a new link" : "Turn link on"}
           </ActionButton>
           {page.linkToken && (
-            <ActionButton
-              className="btn-danger"
-              action={revokeLinkAction.bind(null, page.id)}
-              confirm="Turn off the private link? It will stop working right away."
-            >
+            <ActionButton className="btn-danger" action={revokeLinkAction.bind(null, page.id)} confirm="Turn off the private link? It stops working right away.">
               Turn off link
             </ActionButton>
           )}
@@ -76,55 +76,47 @@ export default async function AdminClientPage(props: PageProps<"/admin/pages/[id
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold">Inspirations</h2>
-        <AdminInspirations pageId={page.id} inspirations={inspirations} />
+        <h2 className="text-lg font-semibold">Reference pictures{locked ? " (hidden from the client)" : ""}</h2>
+        <AdminReferences pageId={page.id} references={references} />
       </section>
 
       <section className="space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-lg font-semibold">Shoot photos (&ldquo;Your Photos&rdquo;)</h2>
+          <h2 className="text-lg font-semibold">Your Photos</h2>
           <div className="flex flex-wrap items-center gap-2">
-            <span className={`text-sm ${page.shootPhotosVisible ? "text-emerald-700" : "text-stone-500"}`}>
-              {page.shootPhotosVisible ? "Visible to client" : "Hidden from client"}
-            </span>
+            <span className="text-sm text-loupe">{locked ? "Visible to the client" : "Hidden from the client"}</span>
             <ActionButton
-              className={page.shootPhotosVisible ? "btn-secondary" : "btn-primary"}
-              action={setShootVisibilityAction.bind(null, page.id, !page.shootPhotosVisible)}
+              className={locked ? "btn-secondary" : "btn-primary"}
+              action={setShootVisibilityAction.bind(null, page.id, !locked)}
               confirm={
-                page.shootPhotosVisible
-                  ? undefined
-                  : "Show the shoot photos to the client? They'll get an email about any new photos."
+                locked
+                  ? "Hide Your Photos and unlock the page? The client sees their reference pictures again."
+                  : "Show Your Photos to the client? This locks the page: reference pictures are hidden and accepted ones are saved. They'll get an email."
               }
             >
-              {page.shootPhotosVisible ? "Hide" : "Show to client"}
+              {locked ? "Hide and unlock" : "Show to client and lock"}
             </ActionButton>
             {shootPhotos.length > 0 && (
-              <a className="btn-secondary" href={`/download/${encodeURIComponent(`p:${page.id}`)}`}>
-                Download all
-              </a>
+              <a className="btn-secondary" href={`/download/${encodeURIComponent(`p:${page.id}`)}`}>Download all</a>
             )}
           </div>
         </div>
-        <Uploader
-          endpoint={`/api/admin/pages/${page.id}/shoot`}
-          afterBatch={finishShootUploadAction.bind(null, page.id)}
-          label="Upload shoot photos"
-        />
+        <Uploader endpoint={`/api/admin/pages/${page.id}/shoot`} afterBatch={finishShootUploadAction.bind(null, page.id)} label="Upload Shoot Photos" />
         <AdminShootPhotos pageId={page.id} photos={shootPhotos} />
       </section>
 
-      <details className="card">
+      <details className="panel">
         <summary className="cursor-pointer font-semibold">Page details</summary>
         <div className="space-y-6 pt-4">
           <PageForm
             action={updatePageAction.bind(null, page.id)}
-            defaults={{ title: page.title, shootDate: page.shootDate, notes: page.notes }}
+            defaults={{ title: page.title, shootDate: page.shootDate, notes: page.notes, favouritesLimit: page.favouritesLimit }}
             submitLabel="Save"
           />
           <ActionButton
             className="btn-danger"
             action={deletePageAction.bind(null, page.id)}
-            confirm="Delete this page, its choices, comments and shoot photos? This can't be undone."
+            confirm="Delete this page, its choices, comments and Shoot Photos? This can't be undone."
           >
             Delete page
           </ActionButton>

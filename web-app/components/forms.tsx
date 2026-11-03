@@ -20,8 +20,9 @@ export function SubmitButton({
   );
 }
 
+/** Errors say what to fix; successes are a quiet note (SPEC §5). */
 export function FormMessage({ state }: { state?: { error?: string; ok?: string } }) {
-  if (state?.error) return <p className="text-sm text-red-700">{state.error}</p>;
-  if (state?.ok) return <p className="text-sm text-emerald-700">{state.ok}</p>;
+  if (state?.error) return <p className="error-note" role="alert">⚠ {state.error}</p>;
+  if (state?.ok) return <p className="ok-note" role="status">{state.ok}</p>;
   return null;
 }

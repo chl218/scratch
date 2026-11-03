@@ -7,7 +7,7 @@ import { LibraryGrid } from "@/components/LibraryGrid";
 
 export const metadata = { title: "Library" };
 
-// F1 (upload & tag) and F2 (search by tag).
+// F1 (upload and tag Reference Pictures) and F2 (search by tag; all tags must match).
 export default async function LibraryPage(props: PageProps<"/admin/library">) {
   await requireAdmin();
   const sp = await props.searchParams;
@@ -18,21 +18,21 @@ export default async function LibraryPage(props: PageProps<"/admin/library">) {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold tracking-tight">Photo library</h1>
-      <Uploader endpoint="/api/admin/photos" withTags />
+      <h1 className="display text-[36px]">Reference library</h1>
+      <Uploader endpoint="/api/admin/photos" withDetails label="Upload pictures" />
 
       <section className="space-y-3">
-        <form action="/admin/library" className="flex gap-2">
+        <form action="/admin/library" className="flex max-w-xl gap-2">
+          <label htmlFor="library-tags" className="sr-only">Search by tags</label>
           <input
+            id="library-tags"
             name="tags"
             className="input"
             placeholder="Search by tags, e.g. #moody #portrait"
             defaultValue={active.map((t) => `#${t}`).join(" ")}
           />
           <button type="submit" className="btn-primary">Search</button>
-          {active.length > 0 && (
-            <Link href="/admin/library" className="btn-secondary">Clear</Link>
-          )}
+          {active.length > 0 && <Link href="/admin/library" className="btn-secondary">Clear</Link>}
         </form>
         {tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
@@ -42,16 +42,17 @@ export default async function LibraryPage(props: PageProps<"/admin/library">) {
                 <Link
                   key={t.name}
                   href={hrefFor(on ? active.filter((x) => x !== t.name) : [...active, t.name])}
-                  className={`pill text-xs ${on ? "border-stone-900 bg-stone-900 text-white" : "border-stone-300 bg-white hover:bg-stone-100"}`}
+                  aria-pressed={on}
+                  className={`pill text-xs ${on ? "pill-on" : ""}`}
                 >
-                  #{t.name} <span className="opacity-60">{t.count}</span>
+                  #{t.name} <span className="opacity-75">{t.count}</span>
                 </Link>
               );
             })}
           </div>
         )}
-        <p className="text-sm text-stone-600">
-          {photos.length} photo{photos.length === 1 ? "" : "s"}
+        <p className="text-sm text-loupe">
+          {photos.length} picture{photos.length === 1 ? "" : "s"}
           {active.length > 0 && <> tagged {active.map((t) => `#${t}`).join(" + ")}</>}
         </p>
       </section>

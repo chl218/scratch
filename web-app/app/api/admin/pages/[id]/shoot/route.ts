@@ -6,7 +6,7 @@ import { getDb, schema } from "@/lib/db";
 import { storeImage, UploadError } from "@/lib/images";
 import * as storage from "@/lib/storage";
 
-// Uploads one shoot photo to a client page (F6). After a batch, the browser calls
+// Uploads one Shoot Photo to a client page (F6). After a batch, the browser calls
 // finishShootUploadAction so the client gets a single email.
 export async function POST(req: NextRequest, ctx: RouteContext<"/api/admin/pages/[id]/shoot">) {
   const user = await getCurrentUser();
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest, ctx: RouteContext<"/api/admin/pages
   const shootId = randomUUID();
   const prefix = `shoots/${pageId}/${shootId}`;
   try {
-    const stored = await storeImage(file, prefix);
+    const stored = await storeImage(file, prefix, { clean: true });
     await db.insert(schema.shootPhotos).values({ id: shootId, pageId, ...stored });
     return Response.json({ id: shootId });
   } catch (err) {

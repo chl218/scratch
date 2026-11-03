@@ -51,3 +51,23 @@ export function formatDateTime(value: Date | string): string {
     minute: "2-digit",
   });
 }
+
+/**
+ * The base username for a client name (SPEC F17): first initial + last word,
+ * lowercase a–z only. "John Doe" → "jdoe", "José Núñez" → "jnunez",
+ * "Ana María García López" → "alopez", "Cher" → "cher".
+ */
+export function baseUsername(name: string): string {
+  const words = name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .split(/\s+/)
+    .map((w) => w.replace(/[^a-z]/g, ""))
+    .filter(Boolean);
+  if (words.length === 0) return "client";
+  if (words.length === 1) return words[0].slice(0, 30);
+  return (words[0][0] + words[words.length - 1]).slice(0, 30);
+}
+
+export const USERNAME_PATTERN = /^[a-z]{1,30}[0-9]{0,4}$/;

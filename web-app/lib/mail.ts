@@ -17,7 +17,7 @@ export function usingLocalOutbox(): boolean {
 // With SMTP_URL set (e.g. smtp://localhost:1025 for Mailpit), emails are sent.
 // Without it, each email is saved as a JSON file in .mail/ and shown at /admin/outbox.
 export async function sendMail(mail: Mail): Promise<void> {
-  const from = process.env.MAIL_FROM || "Moodboard <no-reply@localhost>";
+  const from = process.env.MAIL_FROM || "ReferenceMePlzQQ <no-reply@localhost>";
   if (process.env.SMTP_URL) {
     const transport = nodemailer.createTransport(process.env.SMTP_URL);
     await transport.sendMail({ from, ...mail });

@@ -7,26 +7,25 @@ import { ACCEPTED_UPLOAD_TYPES, MAX_UPLOAD_MB } from "@/lib/shared";
 type Status = { name: string; state: "waiting" | "uploading" | "done" | "error"; error?: string };
 
 /**
- * Uploads photos one per request to `endpoint`. With `withTags`, the admin can
- * give the whole batch a title/notes/tags (F1). `afterBatch` runs once when the
- * batch finishes (used to send a single notification email).
+ * Uploads photos one per request to `endpoint`. With `withDetails`, the admin can
+ * give the whole batch tags, notes, a credit and a source (F1). `afterBatch` runs
+ * once when the batch finishes (used to send a single notification email).
  */
 export function Uploader({
   endpoint,
-  withTags = false,
+  withDetails = false,
   afterBatch,
   label = "Upload photos",
 }: {
   endpoint: string;
-  withTags?: boolean;
+  withDetails?: boolean;
   afterBatch?: () => Promise<void>;
   label?: string;
 }) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<File[]>([]);
-  const [tags, setTags] = useState("");
-  const [notes, setNotes] = useState("");
+  const [fields, setFields] = useState({ tags: "", notes: "", credit: "", sourceUrl: "" });
   const [statuses, setStatuses] = useState<Status[]>([]);
   const [busy, setBusy] = useState(false);
 
@@ -50,10 +49,7 @@ export function Uploader({
       setStatuses((s) => s.map((x, j) => (j === i ? { ...x, state: "uploading" } : x)));
       const body = new FormData();
       body.set("file", files[i]);
-      if (withTags) {
-        body.set("tags", tags);
-        body.set("notes", notes);
-      }
+      if (withDetails) for (const [k, v] of Object.entries(fields)) body.set(k, v);
       try {
         const res = await fetch(endpoint, { method: "POST", body });
         const json = await res.json().catch(() => ({}));
@@ -61,9 +57,7 @@ export function Uploader({
         uploaded++;
         setStatuses((s) => s.map((x, j) => (j === i ? { ...x, state: "done" } : x)));
       } catch (err) {
-        setStatuses((s) =>
-          s.map((x, j) => (j === i ? { ...x, state: "error", error: (err as Error).message } : x)),
-        );
+        setStatuses((s) => s.map((x, j) => (j === i ? { ...x, state: "error", error: (err as Error).message } : x)));
       }
     }
     if (uploaded > 0 && afterBatch) await afterBatch();
@@ -74,9 +68,22 @@ export function Uploader({
   }
 
   const ready = files.length > 0 && statuses.some((s) => s.state === "waiting");
+  const field = (key: keyof typeof fields, text: string, placeholder = "") => (
+    <div>
+      <label className="label" htmlFor={`upload-${key}`}>{text}</label>
+      <input
+        id={`upload-${key}`}
+        className="input"
+        placeholder={placeholder}
+        value={fields[key]}
+        onChange={(e) => setFields((f) => ({ ...f, [key]: e.target.value }))}
+        disabled={busy}
+      />
+    </div>
+  );
 
   return (
-    <div className="card space-y-3">
+    <div className="panel space-y-3">
       <div className="flex flex-wrap items-center gap-3">
         <input
           ref={inputRef}
@@ -85,36 +92,18 @@ export function Uploader({
           accept={ACCEPTED_UPLOAD_TYPES}
           onChange={(e) => pick(e.target.files)}
           disabled={busy}
-          className="text-sm file:mr-3 file:cursor-pointer file:rounded-lg file:border-0 file:bg-stone-100 file:px-3 file:py-2 file:text-sm file:font-medium hover:file:bg-stone-200"
+          aria-label="Choose photos"
+          className="text-sm file:mr-3 file:cursor-pointer file:rounded-[6px] file:border file:border-sleeve file:bg-sheet file:px-3 file:py-2 file:text-sm file:font-semibold file:text-graphite"
         />
-        <span className="text-xs text-stone-500">
-          JPEG, PNG, WebP, AVIF or HEIC · up to {MAX_UPLOAD_MB} MB each · no RAW files
-        </span>
+        <span className="text-xs text-loupe">JPEG, PNG, WebP, AVIF or HEIC, up to {MAX_UPLOAD_MB} MB each. No RAW files.</span>
       </div>
 
-      {withTags && (
+      {withDetails && (
         <div className="grid gap-3 sm:grid-cols-2">
-          <div>
-            <label className="label" htmlFor="upload-tags">Tags for these photos</label>
-            <input
-              id="upload-tags"
-              className="input"
-              placeholder="#portrait #moody #blackandwhite"
-              value={tags}
-              onChange={(e) => setTags(e.target.value)}
-              disabled={busy}
-            />
-          </div>
-          <div>
-            <label className="label" htmlFor="upload-notes">Notes (optional)</label>
-            <input
-              id="upload-notes"
-              className="input"
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              disabled={busy}
-            />
-          </div>
+          {field("tags", "Tags for these photos", "#portrait #moody #blackandwhite")}
+          {field("notes", "Notes (optional)")}
+          {field("credit", "Credit (pictures from the web)", "@someone on Instagram")}
+          {field("sourceUrl", "Source URL (optional)", "https://")}
         </div>
       )}
 
@@ -127,15 +116,7 @@ export function Uploader({
           {statuses.map((s, i) => (
             <li key={i} className="flex justify-between gap-3">
               <span className="truncate">{s.name}</span>
-              <span
-                className={
-                  s.state === "error"
-                    ? "text-red-700"
-                    : s.state === "done"
-                      ? "text-emerald-700"
-                      : "text-stone-500"
-                }
-              >
+              <span className={s.state === "error" ? "text-marker" : "text-loupe"}>
                 {s.state === "error" ? s.error : s.state === "done" ? "Uploaded" : s.state === "uploading" ? "Uploading…" : "Waiting"}
               </span>
             </li>
