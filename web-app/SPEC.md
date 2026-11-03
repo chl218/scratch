@@ -56,10 +56,12 @@ Feature numbers are kept from earlier versions so tests and history still match.
 
 ### F1: Upload and tag Reference Pictures (Admin)
 
-- Admins can upload one or more pictures at once.
+- The library has two tabs: **Pictures** (search and edit) and **Upload**.
+- Admins can upload one or more pictures at once, from the Upload tab.
 - Each picture has: title, notes, tags, and the optional **Source URL** and **Credit** (e.g. "@someone on Instagram") for pictures saved from the web. Studio-made pictures leave both blank.
 - Web pictures are saved locally first and uploaded like any other file. There is no "Import from URL".
 - Tags are entered as `#word`, stored in lowercase, and can be edited after upload.
+- Opening a picture shows its details for editing. There is no Save button: changes save on their own (text shortly after typing pauses, the portfolio switch at once). The library editor has no focus point; library pictures in the portfolio are cropped around their centre, with a quiet "All changes saved" note.
 - Files go to file storage; metadata goes in the database.
 
 **Upload limits** (also used for Shoot Photos, F6)
@@ -81,7 +83,8 @@ Feature numbers are kept from earlier versions so tests and history still match.
 ### F2: Search the library by tag (Admin)
 
 - Admins can filter the library by one or more tags. **All tags must match.**
-- Results use the working grid (§4).
+- The search box suggests matching tags while typing (most used first); picking one runs the search. No tag buttons are shown.
+- Results use the working grid (§4), without tag captions under the pictures.
 
 ### F3: Client page: the Board
 
@@ -197,7 +200,8 @@ Payment requests, deposits and paid downloads are moved to §9 Later. The paymen
 - **Mosaic:** up to **24** flagged photos, chosen at random and **shuffled on every visit**, laid out as an interlocking grid (§4) across the full width.
 - Each photo has an admin-set **focus point** (default: centre) that guides how it is cropped into its tile.
 - Tapping a photo opens it full screen with Back and Next. No comments.
-- **Search bar** above the mosaic: searches **only portfolio photos** by tag (all tags must match).
+- The page is called **Overview** in the navigation.
+- **Search bar** above the mosaic (a plain underlined field): searches **only portfolio photos** by tag (all tags must match), suggesting tags while typing.
   - Suggestions show only tags used on portfolio photos, so private library tags never appear.
   - Results replace the mosaic: all matches, newest first, same grid, no 24 limit.
   - Clearing the search returns to a new shuffle.
@@ -258,11 +262,10 @@ Two layouts, chosen by what the grid is for.
 
 **Portfolio mosaic**: the landing page (F13) only.
 
-- An interlocking CSS grid packed with no gaps between tiles. **Portrait** photos fill **1 column × 2 rows**, **landscape** photos **2 columns × 1 row**, square photos 1 × 1.
+- An interlocking CSS grid with white gutters (10 / 20 / 28 px) and page margins, like a gallery wall. **Portrait** photos fill **1 column × 2 rows**, **landscape** photos **2 columns × 1 row**, square photos 1 × 1.
 - 6 columns on desktop, 4 on tablet, 2 on phone. Photos are cropped to their tile around their focus point.
 - Photos fill the first empty cell in reading order. A landscape photo that would overhang a gap or the edge takes a square there, so there are never holes.
 - In the shuffled mosaic the ragged last row is removed (tall photos crossing it become squares), so the mosaic ends in a clean edge.
-- The search bar shows the 8 most used portfolio tags; the rest fold under "More tags".
 
 ---
 
@@ -276,20 +279,29 @@ The design follows the `frontend-design` skill: brief, then a plan, reviewed aga
 - **Audiences:** (1) visitors and friends browsing the portfolio, team and booking pages; (2) clients choosing references and collecting their photos, mostly on phones; (3) admins managing the library and pages on a desktop.
 - **Primary job:** let the photographs speak. The public site shows the studio's eye; the client page makes choosing and collecting feel personal.
 
-### Concept: the light table
+### References (v0.6.1)
 
-Photographers have always chosen images on a light table: prints and contact sheets laid flat on a bright surface, marked by hand with a red grease pencil. Everything in the app sits on that surface. Photos are prints: square corners, no frames, no cards. The **grease-pencil marks** are the one bold element; everything else stays quiet.
+The owner pointed to three photographers' sites as the target look: [Levon Biss](https://www.levonbiss.com/), [Jonathan Gregson](https://www.jonathangregson.co.uk/) and [David Degner](https://www.daviddegner.com/). What they share, and what this app now follows:
+
+- A plain **white wall**: almost no chrome, no accent colour, no cards.
+- The name in **light, spaced capitals**; small text links top right; the current page marked by a thin underline. The home page is called **Overview** (as on Levon Biss).
+- **The photographs are the page**: a gallery grid with generous white gutters and page margins.
+- Quiet, regular-weight headings. No tag buttons; search suggests tags while typing.
+
+### Concept: the white wall and the grease pencil
+
+The public site is a gallery wall: white, quiet, photographs first. Inside the app, choosing still borrows the photographer's grease pencil: the **red Accept circle and ✕** (and the ♥) are the only colour, so they stay the one bold element. Photos are prints: square corners, no frames.
 
 ### Colour
 
 | Token | Hex | Use |
 |-------|-----|-----|
-| `table` | `#F3F6F8` | Page background: cool, backlit white |
-| `sheet` | `#FFFFFF` | Raised surfaces: dialogs, inputs, the admin's tables |
-| `graphite` | `#1F2529` | Text and primary buttons |
-| `loupe` | `#66717A` | Secondary text, placeholders |
-| `sleeve` | `#D5DCE1` | Borders and dividers |
-| `marker` | `#D0262E` | The grease pencil: the Accept circle, the ♥, focus rings, the active pill |
+| `table` | `#FFFFFF` | Page background: the white wall |
+| `sheet` | `#F6F6F5` | Raised surfaces: side panels, the admin's tables |
+| `graphite` | `#1C1C1C` | Text, primary buttons, active pills, focus rings |
+| `loupe` | `#6E6E6E` | Secondary text, placeholders |
+| `sleeve` | `#E3E3E1` | Borders and dividers |
+| `marker` | `#D0262E` | The grease pencil only: the Accept circle, the ♥, error borders |
 
 **Dark mode** (follows the system setting; a theme switch overrides it): a darkroom mid-grey, never black.
 
@@ -308,10 +320,11 @@ Photographers have always chosen images on a light table: prints and contact she
 ### Type
 
 - **One family: Archivo** (Google Fonts, variable, width axis 62–125), loaded with `next/font`.
-  - **Display** (wordmark, page titles, client page name): Archivo **condensed** (width 62–75), weight 800, tight tracking. It echoes the condensed lettering printed along film edges.
-  - **Body and UI**: Archivo, normal width (100), weight 400; 600 for buttons and names.
+  - **Wordmark**: weight 400, uppercase, letter-spacing 0.08em, 20–22 px.
+  - **Headings** (page titles, client page name): weight 400, slightly tight tracking, 32–44 px.
+  - **Body and UI**: Archivo, weight 400; 600 for buttons and names.
 - **Scale** (classic, Bringhurst-style): 12 · 14 · 16 · 18 · 21 · 24 · 36 · 48 · 72 px. Body text 16/1.5. Lines under 70 characters.
-- Sentence case everywhere. No all-caps labels, no eyebrows above headings, no monospace labels.
+- Sentence case everywhere except the wordmark. No all-caps labels, no eyebrows above headings, no monospace labels.
 
 ### The marks (the one bold element)
 

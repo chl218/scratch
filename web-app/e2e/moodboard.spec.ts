@@ -56,6 +56,8 @@ test("settings: no digest delay and no booking cutoff, so the test doesn't wait"
 
 test("F1: upload Reference Pictures with tags and a credit; bad files are rejected", async () => {
   await admin.goto("/admin/library");
+  await admin.getByRole("navigation", { name: "Library" }).getByRole("link", { name: "Upload" }).click();
+  await expect(admin).toHaveURL(/\/admin\/library\/upload$/);
   const picker = admin.getByLabel("Choose photos");
 
   await picker.setInputFiles([fixture("ref1.jpg"), fixture("ref2.jpg"), fixture("ref3.jpg"), fixture("fake.jpg"), fixture("too-big.jpg")]);
@@ -71,9 +73,16 @@ test("F1: upload Reference Pictures with tags and a credit; bad files are reject
   await admin.getByRole("button", { name: /Upload pictures/ }).click();
   await expect(admin.getByText("Uploaded", { exact: true })).toHaveCount(2);
 
-  await admin.reload();
+  await admin.getByRole("navigation", { name: "Library" }).getByRole("link", { name: "Pictures" }).click();
   await expect(admin.getByText("5 pictures")).toBeVisible();
-  await expect(admin.getByRole("link", { name: /#portrait\s*5/ })).toBeVisible();
+  // No tag captions under the pictures, and no tag buttons: tags are suggested while typing.
+  await expect(admin.getByText("#portrait")).toHaveCount(0);
+  const search = admin.getByRole("combobox", { name: "Search by tags" });
+  await search.fill("#por");
+  await expect(admin.getByRole("option", { name: /#portrait\s*5/ })).toBeVisible();
+  await admin.getByRole("option", { name: /#portrait/ }).click();
+  await expect(admin).toHaveURL(/\/admin\/library\?tags=portrait$/);
+  await expect(admin.getByText("5 pictures tagged #portrait")).toBeVisible();
 });
 
 test("F1/F13: credited pictures can't join the portfolio; the studio's own work can", async () => {
@@ -83,16 +92,18 @@ test("F1/F13: credited pictures can't join the portfolio; the studio's own work 
   await expect(admin.getByRole("checkbox", { name: /Show in portfolio/ })).toBeDisabled();
   await admin.getByLabel("Title").fill("Window light");
   await admin.getByLabel("Tags", { exact: true }).fill("#blackandwhite #portrait #window");
-  await admin.getByRole("button", { name: "Save" }).click();
-  await expect(admin.getByText("Saved.")).toBeVisible();
+  // No Save button: changes save on their own once typing pauses.
+  await expect(admin.getByRole("button", { name: "Save" })).toHaveCount(0);
+  await expect(admin.getByText("All changes saved")).toBeVisible();
   await admin.keyboard.press("Escape");
+  await admin.goto("/admin/library?tags=window");
+  await expect(admin.getByText("1 picture tagged #window")).toBeVisible();
 
   await admin.goto("/admin/library?tags=moody");
   await admin.locator("main .jt button").first().click();
   await admin.getByLabel("Tags", { exact: true }).fill("#portrait #moody #golden");
   await admin.getByRole("checkbox", { name: /Show in portfolio/ }).check();
-  await admin.getByRole("button", { name: "Save" }).click();
-  await expect(admin.getByText("Saved.")).toBeVisible();
+  await expect(admin.getByText("All changes saved")).toBeVisible();
   await admin.keyboard.press("Escape");
 });
 
@@ -106,9 +117,14 @@ test("F2: search the library by tags (all tags must match)", async () => {
 test("F13: the landing page shows the portfolio; search only uses portfolio tags", async () => {
   await visitor.goto("/");
   await expect(visitor.locator(".mosaic img")).toHaveCount(1);
-  await expect(visitor.getByRole("link", { name: "#golden" })).toBeVisible();
-  await expect(visitor.getByRole("link", { name: "#blackandwhite" })).toHaveCount(0);
-  await visitor.goto("/?tags=golden");
+  await expect(visitor.getByRole("link", { name: "Overview" })).toHaveAttribute("aria-current", "page");
+  // Suggestions only offer portfolio tags: #blackandwhite is only on credited (private) pictures.
+  const search = visitor.getByRole("combobox", { name: "Search by tags" });
+  await search.fill("#bla");
+  await expect(visitor.getByRole("option")).toHaveCount(0);
+  await search.fill("#gol");
+  await visitor.getByRole("option", { name: /#golden/ }).click();
+  await expect(visitor).toHaveURL(/\/\?tags=golden$/);
   await expect(visitor.getByText("1 photo tagged #golden")).toBeVisible();
 
   const src = await visitor.locator(".mosaic img").first().getAttribute("src");

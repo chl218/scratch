@@ -32,6 +32,8 @@ export default defineConfig({
       SMTP_URL: "",
       DATABASE_URL: "",
       DIGEST_POLL_MS: "1000",
+      // The tests cover every admin section, including ones hidden for now (lib/sections.ts).
+      ADMIN_HIDDEN_SECTIONS: "",
     },
   },
 });

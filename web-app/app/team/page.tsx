@@ -19,8 +19,8 @@ export default async function TeamPage() {
   return (
     <div className="flex flex-1 flex-col">
       <SiteHeader current="/team" />
-      <main className="w-full max-w-[1200px] px-4 py-8 sm:px-6">
-        <h1 className="display text-[48px] sm:text-[72px]">Meet the team</h1>
+      <main className="w-full max-w-[1200px] px-4 pb-8 sm:px-8 lg:px-11">
+        <h1 className="display text-[32px] sm:text-[44px]">Meet the team</h1>
         {team.length === 0 ? (
           <p className="mt-6 max-w-xl text-loupe">The team is still writing their introductions. Check back soon.</p>
         ) : (
@@ -40,7 +40,7 @@ export default async function TeamPage() {
                   </div>
                 )}
                 <div className="min-w-0">
-                  <h2 className="display text-[36px]">{p.displayName}</h2>
+                  <h2 className="display text-[24px]">{p.displayName}</h2>
                   {p.roleTitle && <p className="font-semibold">{p.roleTitle}</p>}
                   {(p.yearsExperience || p.specialties) && (
                     <p className="mt-1 text-sm text-loupe">

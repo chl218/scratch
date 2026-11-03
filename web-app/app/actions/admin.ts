@@ -29,8 +29,9 @@ const photoFields = z.object({
   credit: z.string().trim().max(200),
   sourceUrl: z.union([z.literal(""), z.string().trim().url("Enter a full web address, starting with https://").max(1000)]),
   inPortfolio: z.boolean(),
-  focusX: z.coerce.number().int().min(0).max(100),
-  focusY: z.coerce.number().int().min(0).max(100),
+  // Optional: the library editor doesn't set a focus point, so it keeps the stored one (centre by default).
+  focusX: z.coerce.number().int().min(0).max(100).optional(),
+  focusY: z.coerce.number().int().min(0).max(100).optional(),
 });
 
 export async function updatePhotoAction(photoId: string, _prev: FormState, form: FormData): Promise<FormState> {
@@ -42,8 +43,8 @@ export async function updatePhotoAction(photoId: string, _prev: FormState, form:
     credit: form.get("credit") ?? "",
     sourceUrl: String(form.get("sourceUrl") ?? "").trim(),
     inPortfolio: form.get("inPortfolio") === "on",
-    focusX: form.get("focusX") ?? 50,
-    focusY: form.get("focusY") ?? 50,
+    focusX: form.get("focusX") ?? undefined,
+    focusY: form.get("focusY") ?? undefined,
   });
   if (!parsed.success) return { error: firstError(parsed.error) };
   if (!id.safeParse(photoId).success) return { error: "Picture not found." };

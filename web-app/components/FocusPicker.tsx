@@ -6,7 +6,18 @@ import { useState } from "react";
  * Sets a photo's focus point for portfolio crops (F13): click where the subject is.
  * Writes hidden focusX / focusY inputs (0–100) into the surrounding form.
  */
-export function FocusPicker({ src, x, y }: { src: string; x: number; y: number }) {
+export function FocusPicker({
+  src,
+  x,
+  y,
+  onChange,
+}: {
+  src: string;
+  x: number;
+  y: number;
+  /** Called after the point moves (the hidden inputs already hold the new values). */
+  onChange?: () => void;
+}) {
   const [point, setPoint] = useState({ x, y });
   return (
     <div>
@@ -20,6 +31,8 @@ export function FocusPicker({ src, x, y }: { src: string; x: number; y: number }
             x: Math.round(((e.clientX - r.left) / r.width) * 100),
             y: Math.round(((e.clientY - r.top) / r.height) * 100),
           });
+          // Let React write the hidden inputs first.
+          if (onChange) setTimeout(onChange, 0);
         }}
         aria-label="Click where the subject is"
       >

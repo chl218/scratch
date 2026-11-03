@@ -5,6 +5,7 @@ import { requireAdmin } from "@/lib/auth";
 import { getDb, schema } from "@/lib/db";
 import { pageReferences, pageShootPhotos } from "@/lib/data";
 import { appUrl } from "@/lib/tokens";
+import { sectionOn } from "@/lib/sections";
 import {
   deletePageAction,
   finishShootUploadAction,
@@ -39,7 +40,11 @@ export default async function AdminClientPage(props: PageProps<"/admin/pages/[id
     <div className="max-w-6xl space-y-8">
       <AutoRefresh pageId={page.id} />
       <div>
-        <Link href={`/admin/clients/${client.id}`} className="text-sm text-loupe hover:text-graphite">{client.name}</Link>
+        {sectionOn("clients") ? (
+          <Link href={`/admin/clients/${client.id}`} className="text-sm text-loupe hover:text-graphite">{client.name}</Link>
+        ) : (
+          <p className="text-sm text-loupe">{client.name}</p>
+        )}
         <h1 className="display text-[36px]">{page.title}</h1>
         <p className="text-sm text-loupe">
           {locked

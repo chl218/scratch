@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
-/* ReferenceMePlzQQ design tokens (SPEC §5): a light table, prints, a red grease pencil. */
+/* ReferenceMePlzQQ design tokens (SPEC §5): a white gallery wall, quiet type, and a red
+   grease pencil kept for the Accept mark and the ♥ only. */
 :root {
-  --table: #f3f6f8;
-  --sheet: #ffffff;
-  --graphite: #1f2529;
-  --loupe: #66717a;
-  --sleeve: #d5dce1;
+  --table: #ffffff;
+  --sheet: #f6f6f5;
+  --graphite: #1c1c1c;
+  --loupe: #6e6e6e;
+  --sleeve: #e3e3e1;
   --marker: #d0262e;
   --on-graphite: #ffffff;
   color-scheme: light;
@@ -54,18 +55,24 @@ body {
   line-height: 1.5;
 }
 
-/* Display type: Archivo condensed and heavy, like lettering along a film edge. */
+/* Headings: regular weight and quiet, so the photographs carry the page. */
 .display {
   font-family: var(--font-archivo), ui-sans-serif, sans-serif;
-  font-stretch: 68%;
-  font-variation-settings: "wdth" 68;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  line-height: 1.02;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+}
+
+/* The studio name: light, uppercase, spaced, like a gallery's lettering. */
+.wordmark {
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1;
 }
 
 :focus-visible {
-  outline: 2px solid var(--marker);
+  outline: 2px solid var(--graphite);
   outline-offset: 2px;
 }
 
@@ -99,7 +106,7 @@ body {
   @apply inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-sleeve bg-sheet px-3 py-1 text-sm text-graphite transition-colors hover:border-graphite;
 }
 @utility pill-on {
-  @apply border-marker bg-marker text-white hover:border-marker;
+  @apply border-graphite bg-graphite text-on-graphite hover:border-graphite;
 }
 @utility error-note {
   @apply border-l-2 border-marker pl-3 text-sm text-graphite;
@@ -171,13 +178,30 @@ body {
 
 /* ---------- Portfolio mosaic: an interlocking grid, packed on the server (§4). ---------- */
 
+/* Photos hang on a white wall: page margins and gutters, as in a gallery. Rows stay
+   square cells, so the grid still interlocks: cell = (width - gaps) / columns. */
 .mosaic {
+  --gap: 10px;
   container-type: inline-size;
+  margin-inline: 16px;
+}
+@media (min-width: 640px) {
+  .mosaic {
+    --gap: 20px;
+    margin-inline: 32px;
+  }
+}
+@media (min-width: 1024px) {
+  .mosaic {
+    --gap: 28px;
+    margin-inline: 44px;
+  }
 }
 .mosaic-grid {
   display: grid;
+  gap: var(--gap);
   grid-template-columns: repeat(2, 1fr);
-  grid-auto-rows: calc(100cqw / 2);
+  grid-auto-rows: calc((100cqw - var(--gap)) / 2);
 }
 .mosaic-grid > * {
   grid-column: var(--c2);
@@ -187,7 +211,7 @@ body {
 @media (min-width: 640px) {
   .mosaic-grid {
     grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: calc(100cqw / 4);
+    grid-auto-rows: calc((100cqw - 3 * var(--gap)) / 4);
   }
   .mosaic-grid > * {
     grid-column: var(--c4);
@@ -198,7 +222,7 @@ body {
 @media (min-width: 1024px) {
   .mosaic-grid {
     grid-template-columns: repeat(6, 1fr);
-    grid-auto-rows: calc(100cqw / 6);
+    grid-auto-rows: calc((100cqw - 5 * var(--gap)) / 6);
   }
   .mosaic-grid > * {
     grid-column: var(--c6);

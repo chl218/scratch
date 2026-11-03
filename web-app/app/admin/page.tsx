@@ -3,6 +3,7 @@ import { and, asc, count, desc, eq, gte, sql } from "drizzle-orm";
 import { requireAdmin } from "@/lib/auth";
 import { getDb, schema } from "@/lib/db";
 import { getSettings } from "@/lib/booking";
+import { sectionOn } from "@/lib/sections";
 import { formatDate } from "@/lib/shared";
 import { formatWhen } from "@/lib/time";
 
@@ -44,18 +45,24 @@ export default async function AdminHome() {
       <div>
         <h1 className="display text-[36px]">Overview</h1>
         <p className="text-sm text-loupe">
-          {photos.n} reference pictures in the <Link href="/admin/library" className="underline">library</Link>,{" "}
-          {clients.n} <Link href="/admin/clients" className="underline">clients</Link>.
+          {photos.n} reference pictures in the <Link href="/admin/library" className="underline">library</Link>
+          {sectionOn("clients") && (
+            <>
+              , {clients.n} <Link href="/admin/clients" className="underline">clients</Link>
+            </>
+          )}
+          .
         </p>
       </div>
 
-      {user.isSuperAdmin && pending.n > 0 && (
+      {sectionOn("team") && user.isSuperAdmin && pending.n > 0 && (
         <p className="error-note">
           {pending.n} admin invite{pending.n === 1 ? " is" : "s are"} waiting for your approval.{" "}
           <Link href="/admin/team" className="font-semibold underline">Review</Link>
         </p>
       )}
 
+      {sectionOn("bookings") && (
       <section className="space-y-2">
         <h2 className="font-semibold">Coming up</h2>
         {upcoming.length === 0 ? (
@@ -73,12 +80,18 @@ export default async function AdminHome() {
           </ul>
         )}
       </section>
+      )}
 
       <section className="space-y-2">
         <h2 className="font-semibold">Recent client pages</h2>
         {recent.length === 0 ? (
           <p className="text-sm text-loupe">
-            No client pages yet. <Link href="/admin/clients" className="underline">Add a client</Link> to create one.
+            No client pages yet.
+            {sectionOn("clients") && (
+              <>
+                {" "}<Link href="/admin/clients" className="underline">Add a client</Link> to create one.
+              </>
+            )}
           </p>
         ) : (
           <ul className="divide-y divide-sleeve border-y border-sleeve bg-sheet text-sm">

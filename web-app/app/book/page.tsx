@@ -34,8 +34,8 @@ export default async function BookPage(props: PageProps<"/book">) {
   return (
     <div className="flex flex-1 flex-col">
       <SiteHeader current="/book" />
-      <main className="w-full max-w-[1200px] px-4 py-8 sm:px-6">
-        <h1 className="display text-[48px] sm:text-[72px]">{reschedule ? "Move your booking" : "Book a shoot"}</h1>
+      <main className="w-full max-w-[1200px] px-4 pb-8 sm:px-8 lg:px-11">
+        <h1 className="display text-[32px] sm:text-[44px]">{reschedule ? "Move your booking" : "Book a shoot"}</h1>
         <p className="mt-3 max-w-[60ch] text-loupe">
           {found
             ? "Pick a session and a time. Bookings are confirmed straight away, and you'll get an email."

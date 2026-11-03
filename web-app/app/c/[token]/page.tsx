@@ -18,7 +18,7 @@ export default async function PrivateLinkPage(props: PageProps<"/c/[token]">) {
     <div className="flex flex-1 flex-col">
       {access.actor.type === "client" && <RememberLink token={token} />}
       <SiteHeader />
-      <main className="w-full px-4 py-6 sm:px-6">
+      <main className="w-full px-4 pb-6 sm:px-8 lg:px-11">
         <Link href="/" className="btn-quiet -ml-2 mb-2">Home</Link>
         <ClientPageView access={access} path={`/c/${token}`} />
       </main>

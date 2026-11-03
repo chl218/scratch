@@ -23,11 +23,11 @@ export default async function ClientAreaLayout(props: LayoutProps<"/u/[username]
   return (
     <div className="flex flex-1 flex-col">
       <SiteHeader />
-      <div className="w-full px-4 sm:px-6">
+      <div className="w-full px-4 sm:px-8 lg:px-11">
         <div className="flex flex-wrap items-end justify-between gap-3 border-b border-sleeve pb-3 pt-4">
           <div>
             <p className="text-sm text-loupe">My studio</p>
-            <h1 className="display text-[36px] sm:text-[48px]">{area.client.name}</h1>
+            <h1 className="display text-[28px] sm:text-[36px]">{area.client.name}</h1>
           </div>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
             <nav aria-label="Client area" className="flex gap-4">
@@ -49,7 +49,7 @@ export default async function ClientAreaLayout(props: LayoutProps<"/u/[username]
           </div>
         </div>
       </div>
-      <main className="w-full px-4 py-6 sm:px-6">{props.children}</main>
+      <main className="w-full px-4 pb-6 sm:px-8 lg:px-11">{props.children}</main>
       <SiteFooter />
     </div>
   );

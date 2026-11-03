@@ -351,10 +351,10 @@ export async function portfolioPhotos(tagNames: string[] = []): Promise<Portfoli
  * Tags used on portfolio photos only, most used first, so private library tags
  * never reach the public.
  */
-export async function portfolioTags(): Promise<string[]> {
+export async function portfolioTags(): Promise<{ name: string; count: number }[]> {
   const db = await getDb();
-  const result = await db.execute<{ name: string }>(sql`
-    select name from (
+  const result = await db.execute<{ name: string; count: number }>(sql`
+    select name, sum(uses)::int as count from (
       select t.name, count(*) as uses from tags t
         join photo_tags pt on pt.tag_id = t.id
         join photos p on p.id = pt.photo_id and p.in_portfolio and p.credit = ''
@@ -367,7 +367,7 @@ export async function portfolioTags(): Promise<string[]> {
     ) used
     group by name
     order by sum(uses) desc, name`);
-  return result.rows.map((r) => r.name);
+  return result.rows.map((r) => ({ name: r.name, count: Number(r.count) }));
 }
 
 /** Whether a photo may be shown publicly (media route). */

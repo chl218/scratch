@@ -38,7 +38,7 @@ export async function ClientPageView({ access, path }: { access: PageAccess; pat
   return (
     <div className="space-y-6">
       <header className="space-y-2">
-        <h1 className="display text-[48px] sm:text-[72px]">{page.title}</h1>
+        <h1 className="display text-[32px] sm:text-[44px]">{page.title}</h1>
         <p className="text-loupe">
           For {client.name}
           {page.shootDate && <>, shoot on {formatDate(page.shootDate)}</>}

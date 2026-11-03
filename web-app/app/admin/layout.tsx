@@ -3,6 +3,7 @@ import { and, count, eq, isNull } from "drizzle-orm";
 import { requireAdmin } from "@/lib/auth";
 import { getDb, schema } from "@/lib/db";
 import { usingLocalOutbox } from "@/lib/mail";
+import { sectionOn } from "@/lib/sections";
 import { logoutAction } from "@/app/actions/auth";
 
 // Admin area (SPEC §5): same tokens as the public site, but dense and quiet.
@@ -21,10 +22,11 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
   const links = [
     { href: "/admin", label: "Overview" },
     { href: "/admin/library", label: "Library" },
-    { href: "/admin/clients", label: "Clients" },
-    { href: "/admin/inbox", label: "Inbox", badge: unread.n + contact.n },
-    { href: "/admin/bookings", label: "Bookings" },
-    { href: "/admin/team", label: "Team", badge: user.isSuperAdmin ? pending.n : 0 },
+    // Sections switched off in lib/sections.ts are left out.
+    ...(sectionOn("clients") ? [{ href: "/admin/clients", label: "Clients" }] : []),
+    ...(sectionOn("inbox") ? [{ href: "/admin/inbox", label: "Inbox", badge: unread.n + contact.n }] : []),
+    ...(sectionOn("bookings") ? [{ href: "/admin/bookings", label: "Bookings" }] : []),
+    ...(sectionOn("team") ? [{ href: "/admin/team", label: "Team", badge: user.isSuperAdmin ? pending.n : 0 }] : []),
     { href: "/admin/settings", label: "Settings" },
     ...(usingLocalOutbox() ? [{ href: "/admin/outbox", label: "Outbox" }] : []),
   ];
