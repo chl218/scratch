@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "igsched"
+version = "0.1.0"
+description = "Download the newest posts of a saved list of Instagram users, daily"
+requires-python = ">=3.10"
+# igdl comes from ../ig-scraper. main-program.py installs it into .venv on first start
+# (pip can't express a relative local dependency here).
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
